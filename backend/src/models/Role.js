@@ -22,36 +22,14 @@ Role.init(
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     },
-    createdBy: {
-      type: DataTypes.INTEGER, // Assuming createdBy is the ID of the user who created the role
-      references: {
-        model: User, // Adjust the model name if needed
-        key: 'id_user'
-      }
-    },
     updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
-    },
-    updatedBy: {
-      type: DataTypes.INTEGER, // Assuming updatedBy is the ID of the user who updated the role
-      references: {
-        model: User, // Adjust the model name if needed
-        key: 'id_user'
-      }
     },
     deletedAt: {
       type: DataTypes.DATE,
       allowNull: true
     },
-    deletedBy: {
-      type: DataTypes.INTEGER, // Assuming deletedBy is the ID of the user who deleted the role
-      references: {
-        model: User, // Adjust the model name if needed
-        key: 'id_user'
-      },
-      allowNull: true
-    }
   },
   {
     sequelize: db,

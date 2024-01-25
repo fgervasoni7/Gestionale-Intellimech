@@ -14,7 +14,7 @@ import Grant from './models/Grant.js';
 import RoleGrant from './models/RoleGrant.js';
 
 // Sync delle tabelle
-sequelize.sync();
+User.sync();
 
 // Caricamento delle variabili d'ambiente
 dotenv.config();
@@ -29,9 +29,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+import router from './routes/router.js';
+
+app.use('/', router);
 
 // Server
 const httpServer = http.createServer(app);

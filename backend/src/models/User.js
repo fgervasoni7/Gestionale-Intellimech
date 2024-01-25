@@ -48,6 +48,12 @@ User.init(
     isActive: {
       type: DataTypes.BOOLEAN
     },
+    lastLogin: {
+        type: DataTypes.DATE
+    },
+    lastLoginIp: {
+        type: DataTypes.STRING
+    },
     createdAt: {
       type: DataTypes.DATE
     },
