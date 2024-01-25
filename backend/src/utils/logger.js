@@ -11,10 +11,10 @@ class Logger {
   static directoryPath = path.join(__dirname, "./logs");
 
   static loglevel = {
-    success: { color: chalk.green, folder: "base" },
+    success: { color: chalk.green.bold, folder: "base" },
     info: { color: chalk.blue, folder: "base" },
-    warn: { color: chalk.yellow, folder: "base" },
-    error: { color: chalk.red, folder: "error" },
+    warn: { color: chalk.hex("#FF5F15"), folder: "base" },
+    error: { color: chalk.red.bold, folder: "error" },
   };
 
 
@@ -62,6 +62,7 @@ class Logger {
   }
 
   static log(level, message) {
+    if (!level || !Logger.loglevel[level]) { level = "info"; }
     if (!Logger.loglevel[level].color) return console.log("Invalid log level: " + level);
     Logger.writeonfile(level, message, Logger.loglevel[level].folder);
     const tsl = level.charAt(0).toUpperCase() + level.slice(1);
@@ -71,4 +72,4 @@ class Logger {
 
 const logger = new Logger();
 
-export default Logger;
+export default Logger.log;
