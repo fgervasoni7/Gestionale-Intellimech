@@ -13,7 +13,7 @@ export default function UserCreateForm() {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    axios.get('http://192.168.3.251:3000/role/read',  { headers: { authorization: `Bearer ${token}` } })
+    axios.get(`${process.env.REACT_APP_API_URL}/role/read`,  { headers: { authorization: `Bearer ${token}` } })
       .then((response) => {
         console.log('response', response);
         setRoles(response.data.roles);
@@ -22,7 +22,7 @@ export default function UserCreateForm() {
         console.error('Error:', error);
       })
 
-    axios.get('http://192.168.3.251:3000/group/read',  { headers: { authorization: `Bearer ${token}` } })
+    axios.get(`${process.env.REACT_APP_API_URL}/group/read`,  { headers: { authorization: `Bearer ${token}` } })
       .then((response) => {
         console.log('response', response);
         setGroups(response.data.groups);
@@ -46,7 +46,7 @@ export default function UserCreateForm() {
     });    
     console.log('json', jsonObject);
 
-    axios.post('http://192.168.3.251:3000/user/create', jsonObject, { headers: { authorization: `Bearer ${token}` } })
+    axios.post(`${process.env.REACT_APP_API_URL}/user/create`, jsonObject, { headers: { authorization: `Bearer ${token}` } })
      .then((response) => {
         console.log('response', response);
         setCreateSuccess(true);

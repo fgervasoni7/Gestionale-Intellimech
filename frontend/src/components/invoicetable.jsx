@@ -18,7 +18,7 @@ export default function invoicetable() {
   // Fetch invoices from the backend
   useEffect(() => {
     axios
-      .get('http://192.168.3.251:3000/invoice/read', {
+      .get(`${process.env.REACT_APP_API_URL}/invoice/read`, {
         headers: { authorization: `Bearer ${Cookies.get('token')}` }
       })
       .then((response) => {

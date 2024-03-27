@@ -37,7 +37,7 @@ export default function Example() {
     // Make a request for each selected user
     selectedPeopleCopy.forEach((person) => {
       axios
-        .delete('http://192.168.3.251:3000/user/delete', {
+        .delete(`${process.env.REACT_APP_API_URL}/user/delete`, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + Cookies.get('token'),
@@ -50,7 +50,7 @@ export default function Example() {
           console.log(response);
           // After deletion, refresh the list of users
           axios
-            .get('http://192.168.3.251:3000/user/read', {
+            .get(`${process.env.REACT_APP_API_URL}/user/read`, {
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + Cookies.get('token'),
@@ -74,7 +74,7 @@ export default function Example() {
 
   useEffect(() => {
     axios
-      .get('http://192.168.3.251:3000/user/read', {
+      .get(`${process.env.REACT_APP_API_URL}/user/read`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + Cookies.get('token'),

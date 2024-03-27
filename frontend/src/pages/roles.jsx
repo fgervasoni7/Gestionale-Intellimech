@@ -44,7 +44,7 @@ export default function users() {
     if (!token) {
       window.location.href = '/';
     } else {
-        axios.get('http://192.168.3.251:3000/auth/verify', { headers: { authorization: `Bearer ${token}` } })
+        axios.get(`${process.env.REACT_APP_API_URL}/auth/verify`, { headers: { authorization: `Bearer ${token}` } })
             .then((response) => {
             console.log('response', response);
             setUser(response.data.user);

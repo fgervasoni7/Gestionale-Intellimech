@@ -11,7 +11,7 @@ const logout = () => {
     const headers = {
       Authorization: `Bearer ${token}`
     };
-    axios.post('http://192.168.3.251:3000/auth/logout', {}, { headers: headers })
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/logout`, {}, { headers: headers })
       .then((response) => {
         Cookies.remove('token');
         localStorage.clear();

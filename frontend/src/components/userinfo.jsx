@@ -22,7 +22,7 @@ export default function userinfo() {
   let id_user = JSON.parse(localStorage.getItem('user'))?.id_user;
   
   useEffect(() => {
-    axios.get('http://192.168.3.251:3000/user/read/' + id_user)
+    axios.get(`${process.env.REACT_APP_API_URL}/user/read/` + id_user)
       .then((response) => {
         setUser(response.data.user);
         setLoading(false); // Set loading to false regardless of success or error

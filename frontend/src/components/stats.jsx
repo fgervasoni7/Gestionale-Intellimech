@@ -14,7 +14,7 @@ export default function Stats() {
     //ask to every link of stats the data and console it and every 30 seconds refresh the data
     // useEffect(() => {
     //     stats.map((item) => {
-    //         axios.get('http://192.168.3.251:3000/' + item.getData, { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
+    //         axios.get(`${process.env.REACT_APP_API_URL}/` + item.getData, { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
     //         .then((response) => {
     //             console.log(response.data);
     //         })
@@ -24,7 +24,7 @@ export default function Stats() {
     //     })
     //     const interval = setInterval(() => {
     //         stats.map((item) => {
-    //             axios.get('http://192.168.3.251:3000/' + item.getData, { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
+    //             axios.get(`${process.env.REACT_APP_API_URL}/` + item.getData, { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
     //             .then((response) => {
     //                 console.log(response.data);
     //             })

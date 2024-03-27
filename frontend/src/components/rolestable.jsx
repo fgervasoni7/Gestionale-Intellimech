@@ -32,7 +32,7 @@ export default function Example() {
 
   useEffect(() => {
     axios
-      .get('http://192.168.3.251:3000/role/read', {
+      .get(`${process.env.REACT_APP_API_URL}/role/read`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + Cookies.get('token'),

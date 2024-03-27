@@ -50,7 +50,7 @@ export default function Navbar() {
     }
     else
     {
-      axios.get('http://192.168.3.251:3000/user/config', { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
+      axios.get(`${process.env.REACT_APP_API_URL}/user/config`, { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
         .then((response) => {
           console.log('response', response);
           // Fix the fullnavigation icons with the correct icon

@@ -33,7 +33,7 @@ const Login = () => {
     const password = event.target.password.value;
 
     try {
-      const response = await axios.post('http://192.168.3.251:3000/auth/login', { email, password, rememberMe: event.target['remember-me'].checked});
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { email, password, rememberMe: event.target['remember-me'].checked});
 
       // Save the token in cookies and set the duration to 7 days or at 15 days if the user checks the remember me checkbox
       const token = response.data.token;
