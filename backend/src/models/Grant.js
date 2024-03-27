@@ -1,6 +1,6 @@
 // grant-model.js
 import { DataTypes, Model } from 'sequelize';
-import db from '../utils/db.js'; // Assicurati di regolare il percorso di importazione
+import db from '../utils/db.js';
 
 class Grant extends Model {}
 
@@ -12,16 +12,19 @@ Grant.init(
       autoIncrement: true
     },
     name: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING(255),
+      allowNull: false
     },
     endpoint: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   },
   {
     sequelize: db,
     modelName: 'Grant',
-    tableName: 'Grant'
+    tableName: 'Grant',
+    timestamps: false // Disable timestamps
   }
 );
 

@@ -1,5 +1,4 @@
-import Sequelize from 'sequelize';
-import Logger from './logger.js';
+import { Sequelize, Op } from 'sequelize';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,16 +18,4 @@ const sequelize = new Sequelize(
         },
     },
     );
-/* Test connection */
-sequelize.authenticate()
-    .then(() => {
-        Logger('success','Database connection has been established successfully');
-        // return true when import this file in server.js
-        return true;
-    })
-    .catch(err => {
-        Logger('error','Unable to connect to the database:', err);
-    });
-
-
 export default sequelize;

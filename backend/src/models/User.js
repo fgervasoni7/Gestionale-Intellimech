@@ -1,7 +1,6 @@
 // user-model.js
 import { DataTypes, Model } from 'sequelize';
 import db from '../utils/db.js';
-import Role from './Role.js';
 
 class User extends Model {}
 
@@ -13,46 +12,48 @@ User.init(
       autoIncrement: true
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     surname: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     birthdate: {
       type: DataTypes.DATE
     },
     username: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     role: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'Role', // Usa il nome della tabella invece del modello
-        key: 'id_role'
-      }
+      allowNull: false
     },
-    isdeleted: {
-      type: DataTypes.BOOLEAN
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     isActive: {
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
-    lastLogin: {
-        type: DataTypes.DATE
+    lastLoginAt: {
+      type: DataTypes.DATE
     },
     lastLoginIp: {
-        type: DataTypes.STRING
+      type: DataTypes.STRING(255)
+    },
+    deletedAt: {
+      type: DataTypes.DATE
     },
     createdAt: {
       type: DataTypes.DATE
@@ -60,25 +61,63 @@ User.init(
     updatedAt: {
       type: DataTypes.DATE
     },
-    addedBy: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: 'id_user'
-      }
+    deletedBy: {
+      type: DataTypes.INTEGER
+    },
+    createdBy: {
+      type: DataTypes.INTEGER
     },
     updatedBy: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: 'id_user'
-      }
-    }
+      type: DataTypes.INTEGER
+    },
+    group: {
+      type: DataTypes.INTEGER
+    },
+    subgroup: {
+      type: DataTypes.INTEGER
+    },
+    contracttype: {
+      type: DataTypes.INTEGER
+    },
+    hweek: {
+      type: DataTypes.INTEGER
+    },
+    /*kmprice: {
+      type: DataTypes.INTEGER
+    },*/
+    taxidcode: {
+      type: DataTypes.STRING(255)
+    },
+    phone: {
+      type: DataTypes.STRING
+    },
+    drivinglicenseexp: {
+      type: DataTypes.DATE
+    },
+    workingsite: {
+      type: DataTypes.INTEGER
+    },
+    country: {
+      type: DataTypes.STRING(50)
+    },
+    streetaddress: {
+      type: DataTypes.STRING(255)
+    },
+    city: {
+      type: DataTypes.STRING(100)
+    },
+    province: {
+      type: DataTypes.STRING(100)
+    },
+    zip: {
+      type: DataTypes.STRING(10)
+    },
   },
   {
     sequelize: db,
     modelName: 'User',
-    tableName: 'User'
+    tableName: 'User',
+    timestamps: false, // Enable timestamps
   }
 );
 

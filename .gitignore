@@ -151,3 +151,4 @@ dist-ssr
 *.sln
 *.sw?
 *.key
+*.txt

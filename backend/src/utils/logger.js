@@ -1,72 +1,57 @@
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
+import Log from "../models/log.js";
 
 //declare __dirname
 const __dirname = path.resolve();
 
 class Logger {
-
-  //make a directory for log
-  static directoryPath = path.join(__dirname, "./logs");
-
+  constructor() {
+    console.clear();
+  }
+  
   static loglevel = {
-    success: { color: chalk.green.bold, folder: "base" },
-    info: { color: chalk.blue, folder: "base" },
-    warn: { color: chalk.hex("#FF5F15"), folder: "base" },
-    error: { color: chalk.red.bold, folder: "error" },
+    success: { name: "SUCCESS", color: chalk.hex("4ADE80").bold, folder: "base" },
+    info: { name: "INFO", color: chalk.hex("#60A5FA"), folder: "base" },
+    warning: { name: "WARNING", color: chalk.hex("#FACC15"), folder: "base" },
+    error: { name: "ERROR", color: chalk.hex("#F87171").bold, folder: "error" },
+    debug: { name: "DEBUG", color: chalk.hex("#E879BA").bold, folder: "base" }
   };
 
+  static log(level, message, req, module) {
+    const timestamps = new Date().toISOString().replace("T", " ").replace("Z", "");
+    const log = Logger.loglevel[level];
+    // declare all in an object
+    const logObject = {
+      timestamps: timestamps,
+      level: log.name,
+      module: module,
+      message: message
+    };
+    // log to console with color using logObject
+    if (level == "debug" && process.env.NODE_ENV !== "development") return;
+    console.log(log.color(`${logObject.timestamps} [${log.name}] [${module}] ${message}`));
 
-  static filename = Date.now() + ".log";
-
-  constructor () {
-    console.clear();
-
-    if (!fs.existsSync(Logger.directoryPath)) {
-      fs.mkdirSync(Logger.directoryPath);
+    // log to file
+    const logFolder = path.join(__dirname, "logs", log.folder);
+    if (!fs.existsSync(logFolder)) {
+      fs.mkdirSync(logFolder, { recursive: true });
     }
-    // if (!fs.existsSync(Logger.directoryPath + "/base")) {
-    //   fs.mkdirSync(Logger.directoryPath + "/base");
-    // }
+    const logFile = path.join(logFolder, `${new Date().toISOString().split("T")[0]}.log`);
+    fs.appendFileSync(logFile, `${logObject.timestamps} [${log.name}] [${module}] ${message} from ${req?.ip}\n`);
 
-    // if (!fs.existsSync(Logger.directoryPath + "/error")) {
-    //   fs.mkdirSync(Logger.directoryPath + "/error");
-    // }
-  }
-
-  static timestamp() {
-    const date = new Date();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-    return hours + ":" + minutes + ":" + seconds;
-  }
-
-  static writeonfile(level, message, logpath) {
-    const tsl = level.charAt(0).toUpperCase() + level.slice(1);
-    const directoryPath = path.join(__dirname, "./logs");
-    // const directoryPath = path.join(__dirname, "./logs" + "/" + logpath);
-    // if(logpath !== "base") {
-    //     const basepath = path.join(__dirname, "./logs" + "/base");
-    // }
-    const filepath = directoryPath + "/" + Logger.filename;
-    const nowdate = new Date();
-    const data = nowdate.toUTCString() + " | " + tsl + " | " + message + "\n";
-    fs.appendFile(filepath, data, function(err) {
-      if (err) {
-        return console.log(err);
+    // log to database
+    Log.create(
+      {
+        level: log.name,
+        module: module,
+        message: message,
+        ip_address: req?.ip
       }
+    ).catch((err) => {
+      console.log("Error saving log to database");
     });
-
-  }
-
-  static log(level, message) {
-    if (!level || !Logger.loglevel[level]) { level = "info"; }
-    if (!Logger.loglevel[level].color) return console.log("Invalid log level: " + level);
-    Logger.writeonfile(level, message, Logger.loglevel[level].folder);
-    const tsl = level.charAt(0).toUpperCase() + level.slice(1);
-    console.log(Logger.loglevel[level].color(Logger.timestamp() + " | " + tsl + " | " + message));
   }
 }
 

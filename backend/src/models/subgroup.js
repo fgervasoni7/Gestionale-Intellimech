@@ -1,12 +1,12 @@
-// role-model.js
+// subgroup-model.js
 import { DataTypes, Model } from 'sequelize';
 import db from '../utils/db.js';
 
-class Role extends Model {}
+class Subgroup extends Model {}
 
-Role.init(
+Subgroup.init(
   {
-    id_role: {
+    id_subgroup: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
@@ -19,32 +19,17 @@ Role.init(
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    createdAt: {
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      type: DataTypes.DATE
-    },
-    deletedAt: {
-      type: DataTypes.DATE
-    },
-    createdBy: {
-      type: DataTypes.INTEGER
-    },
-    updatedBy: {
-      type: DataTypes.INTEGER
-    },
     deletedBy: {
       type: DataTypes.INTEGER
     }
   },
   {
     sequelize: db,
-    modelName: 'Role',
-    tableName: 'Role',
+    modelName: 'Subgroup',
+    tableName: 'Subgroup',
     timestamps: true, // Enable timestamps
     paranoid: true // Enable soft deletes
   }
 );
 
-export default Role;
+export default Subgroup;

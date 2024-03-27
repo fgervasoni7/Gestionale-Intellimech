@@ -1,18 +1,18 @@
-// role-model.js
+// contracttype-model.js
 import { DataTypes, Model } from 'sequelize';
 import db from '../utils/db.js';
 
-class Role extends Model {}
+class ContractType extends Model {}
 
-Role.init(
+ContractType.init(
   {
-    id_role: {
+    id_contracttype: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
     name: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
       allowNull: false
     },
     isDeleted: {
@@ -40,11 +40,11 @@ Role.init(
   },
   {
     sequelize: db,
-    modelName: 'Role',
-    tableName: 'Role',
+    modelName: 'ContractType',
+    tableName: 'ContractType',
     timestamps: true, // Enable timestamps
     paranoid: true // Enable soft deletes
   }
 );
 
-export default Role;
+export default ContractType;

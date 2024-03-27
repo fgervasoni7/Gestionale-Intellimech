@@ -1,6 +1,6 @@
-// roleGrant-model.js
+// rolegrant-model.js
 import { DataTypes, Model } from 'sequelize';
-import db from '../utils/db.js'; // Assicurati di regolare il percorso di importazione
+import db from '../utils/db.js';
 
 class RoleGrant extends Model {}
 
@@ -13,23 +13,18 @@ RoleGrant.init(
     },
     role: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'Role',
-        key: 'id_role'
-      }
+      allowNull: false
     },
     grant: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'Grant',
-        key: 'id_grant'
-      }
-    },
+      allowNull: false
+    }
   },
   {
     sequelize: db,
     modelName: 'RoleGrant',
-    tableName: 'RoleGrant'
+    tableName: 'RoleGrant',
+    timestamps: false // Disable timestamps
   }
 );
 
