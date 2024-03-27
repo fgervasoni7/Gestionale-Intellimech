@@ -26,7 +26,7 @@ Subgroup.init(
   {
     sequelize: db,
     modelName: 'Subgroup',
-    tableName: 'Subgroup',
+    tableName: 'subgroup',
     timestamps: true, // Enable timestamps
     paranoid: true // Enable soft deletes
   }

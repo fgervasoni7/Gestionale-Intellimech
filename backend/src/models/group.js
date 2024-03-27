@@ -42,7 +42,7 @@ Group.init(
   {
     sequelize: db,
     modelName: 'Group',
-    tableName: 'Group',
+    tableName: 'group',
     timestamps: true, // Enable timestamps
   }
 );

@@ -41,7 +41,7 @@ Role.init(
   {
     sequelize: db,
     modelName: 'Role',
-    tableName: 'Role',
+    tableName: 'role',
     timestamps: true, // Enable timestamps
     paranoid: true // Enable soft deletes
   }

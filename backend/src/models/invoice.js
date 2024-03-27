@@ -58,7 +58,7 @@ Invoices.init(
   {
     sequelize: db,
     modelName: 'Invoices',
-    tableName: 'Invoices', // Make sure it matches your table name
+    tableName: 'invoices', // Make sure it matches your table name
     timestamps: false, // Enable timestamps
   }
 );

@@ -23,7 +23,7 @@ Grant.init(
   {
     sequelize: db,
     modelName: 'Grant',
-    tableName: 'Grant',
+    tableName: 'grant',
     timestamps: false // Disable timestamps
   }
 );

@@ -31,7 +31,7 @@ Log.init(
   {
     sequelize: db,
     modelName: 'Log',
-    tableName: 'Log', // Make sure it matches your table name
+    tableName: 'log', // Make sure it matches your table name
     paranoid: true // Enable soft deletes
   }
 );

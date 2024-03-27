@@ -60,7 +60,7 @@ Company.init(
   {
     sequelize: db,
     modelName: 'Company',
-    tableName: 'Company',
+    tableName: 'company',
     timestamps: false // Disable timestamps
   }
 );

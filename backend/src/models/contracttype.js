@@ -41,7 +41,7 @@ ContractType.init(
   {
     sequelize: db,
     modelName: 'ContractType',
-    tableName: 'ContractType',
+    tableName: 'contracttype',
     timestamps: true, // Enable timestamps
     paranoid: true // Enable soft deletes
   }

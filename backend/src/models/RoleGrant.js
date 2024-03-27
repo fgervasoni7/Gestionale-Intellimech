@@ -23,7 +23,7 @@ RoleGrant.init(
   {
     sequelize: db,
     modelName: 'RoleGrant',
-    tableName: 'RoleGrant',
+    tableName: 'rolegrant',
     timestamps: false // Disable timestamps
   }
 );

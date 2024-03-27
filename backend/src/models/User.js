@@ -116,7 +116,7 @@ User.init(
   {
     sequelize: db,
     modelName: 'User',
-    tableName: 'User',
+    tableName: 'user',
     timestamps: false, // Enable timestamps
   }
 );
