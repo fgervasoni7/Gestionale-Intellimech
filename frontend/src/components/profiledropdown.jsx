@@ -31,27 +31,7 @@ function classNames(...classes) {
 export default function navbar() { 
     const [Propic, setPropic] = useState(null);
     const [user, setUser] = useState(null);
-    useEffect(() => {
-        const token = Cookies.get('token');
-        if (!token) {
-          window.location.href = '/';
-        } else {
-            axios.get(`${process.env.REACT_APP_API_URL}/auth/verify`, { headers: { authorization: `Bearer ${token}` } })
-                .then((response) => {
-                console.log('response', response);
-                setUser(response.data.user);
-                setPropic('https://api.dicebear.com/7.x/notionists/svg?seed=' + response.data.user.id_user + '&background=%23fff&radius=50');
-                })
-                .catch((error) => {
-                console.error('Error:', error);
-                // set a timer and after 5 seconds redirect to login page
-                setInterval(() => {
-                    Cookies.remove('token');
-                    window.location.href = '/';
-                }, 5000);
-                })
-        }
-      }, []);
+    
   return (
     <>
                         <Menu as="div" className="relative">

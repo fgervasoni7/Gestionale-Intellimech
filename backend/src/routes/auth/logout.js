@@ -26,9 +26,7 @@ router.use(cookieparser());
 router.post("/logout", async (req, res) => {
     try {
         const token = req.headers["authorization"]?.split(" ")[1] || "";
-        console.log(req.headers["authorization"]);
         if (!token) {
-            console.log("No token");
             return res.status(401).json({
                 message: "Unauthorized",
             });

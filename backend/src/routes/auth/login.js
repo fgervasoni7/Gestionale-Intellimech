@@ -11,6 +11,7 @@ import sequelize from "../../utils/db.js";
 import Logger from "../../utils/logger.js";
 import cookieparser from "cookie-parser";
 import cookie from "cookie";
+import { v4 as uuidv4 } from 'uuid';
 
  
 const router = express.Router();
@@ -43,8 +44,10 @@ router.post("/login", async (req, res) => {
           path.resolve(__dirname, "./src/keys/private.key")
         );
 
+        let sessionId = uuidv4();
+
         const token = jwt.sign(
-          { id: user.id_user },
+          { id: user.id_user , sessionId: sessionId},
           privateKey,
           {
             algorithm: "RS256",
@@ -55,6 +58,7 @@ router.post("/login", async (req, res) => {
         // update last login and is active
         user.isActive = true;
         user.lastLoginAt = new Date();
+        user.sessionId = sessionId
         if(req.ip === "::1") {
             user.lastLoginIp = "localhost";
         } else {

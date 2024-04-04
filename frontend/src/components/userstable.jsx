@@ -1,11 +1,11 @@
 import { Fragment, useState, useRef, useEffect } from 'react'
-import { Dialog, Menu, Transition, Disclosure } from '@headlessui/react'
-import { ChevronRightIcon, XMarkIcon, CheckBadgeIcon  } from '@heroicons/react/20/solid'
-import { PencilSquareIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline'
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon, PencilSquareIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/20/solid'
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import UserCreateForm from './userscreate';
+import Notify from './notifypopup';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -19,41 +19,12 @@ export default function Example() {
   const [people, setPeople] = useState([]);
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setselectedStatus] = useState('');
   const [sortColumn, setSortColumn] = useState('');
   const [sortDirection, setSortDirection] = useState('asc');
-
-
-  useEffect(() => {
-    //check if the user is saved in the local storage
-    const user = localStorage.getItem('user');
-    if (user) {
-      setUser(JSON.parse(user));
-    } else {
-      //if not, make a request to the server to get the user data
-      const token = Cookies.get('token');
-      if (!token) {
-        window.location.href = '/';
-      } else {
-        axios.get(`${process.env.REACT_APP_API_URL}/auth/verify`, { headers: { authorization: `Bearer ${token}` } })
-          .then((response) => {
-            console.log('response', response);
-            setUser(response.data.user);
-            // Set user data to local storage
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-            // set a timer and after 5 seconds redirect to login page
-            setInterval(() => {
-              Cookies.remove('token');
-            }, 5000);
-          });
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const isIndeterminate = selectedPeople.length > 0 && selectedPeople.length < people.length;
@@ -149,10 +120,9 @@ export default function Example() {
   }
 
   return (
-    
     <div className="px-4 sm:px-6 lg:px-8">
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setOpen}>
+       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <div className="fixed inset-0" />
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
@@ -200,6 +170,7 @@ export default function Example() {
           <p className="mt-2 text-sm text-gray-700">Lista utenti presenti nel sistema</p>
         </div>
         {/* Search box and Year filter */}
+        <Notify showPopup={showPopup} />
         <div className="flex flex-wrap justify-between mt-4 mb-4">
           <div className="flex-grow w-full max-w-xs mr-4 mb-4">
             <input

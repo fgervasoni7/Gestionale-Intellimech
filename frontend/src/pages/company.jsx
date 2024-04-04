@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef, useEffect } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Menu, Transition, Disclosure } from '@headlessui/react'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
@@ -6,79 +6,33 @@ import Cookies from 'js-cookie'
 import {
   Bars3Icon,
   BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  TagIcon,
-  CheckBadgeIcon,
   XMarkIcon,
   
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-
-import Usertable from '../components/userstable'
-import { userNavigation } from '../config/navbar'
-import Navbar from '../components/navbar'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 const Logo = './assets/intellimech.svg'
+
+import { userNavigation } from '../config/navbar'
+import Navbar from '../components/navbar'
+import Stats from '../components/stats'
+import CompanyTable from '../components/companytable'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function users() {
+export default function company({ type, userdata }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [Propic, setPropic] = useState(null);
-  const [open, setOpen] = useState(false)
-  
-
-  const cancelButtonRef = useRef(null)
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    if (!token) {
-      window.location.href = '/';
-    } else {
-        axios.get(`${process.env.REACT_APP_API_URL}/auth/verify`, { headers: { authorization: `Bearer ${token}` } })
-            .then((response) => {
-              console.log('response', response);
-              setUser(response.data.user);
-              setPropic('https://api.dicebear.com/7.x/notionists/svg?seed=' + response.data.user.id_user + '&background=%23fff&radius=50');
-              setLoading(false); // Set loading to false regardless of success or error
-              // Set user data to local storage
-              localStorage.setItem('user', JSON.stringify(response.data.user));
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-              // set a timer and after 5 seconds redirect to login page
-              setInterval(() => {
-                  Cookies.remove('token');
-                  window.location.href = '/';
-              }, 5000);
-            })
-    }
-  }, []);
-
-  if (loading) {
-    return (
-        <div className="flex items-center justify-center h-screen">
-        <div role="status" className="text-center">
-        <img
-            src={Logo}
-            alt="Bouncing Image"
-            className="animate-bounce w-max text-gray-200 fill-blue-600"
-        />
-        <span className="sr-only">Loading...</span>
-        </div>
-    </div>
-    )
-  }
+    setUser(userdata);
+    setPropic('https://api.dicebear.com/7.x/notionists/svg?seed=' + userdata.id_user + '&background=%23fff&radius=50');
+  }, [userdata]);
 
   return (
     <>
@@ -126,7 +80,7 @@ export default function users() {
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
-                    <Navbar />
+                    {<Navbar />}                   
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -138,12 +92,12 @@ export default function users() {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-            <Navbar />
+            {<Navbar />}
           </div>
         </div>
 
         <div className="lg:pl-72">
-          <div className="sticky top-0  lg:mx-auto lg:max-w-7xl lg:px-8">
+          <div className="sticky top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-8">
             <div className="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none">
               <button
                 type="button"
@@ -198,7 +152,8 @@ export default function users() {
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
-                              <button
+                              <a
+                                href={item.href}
                                 onClick={item.onClick} // Added onClick event
                                 className={classNames(
                                   active ? 'bg-gray-50' : '',
@@ -206,7 +161,7 @@ export default function users() {
                                 )}
                               >
                                 {item.name}
-                              </button>
+                              </a>
                             )}
                           </Menu.Item>
                         ))}
@@ -218,9 +173,8 @@ export default function users() {
             </div>
           </div>
           <main className="py-10">
-            
             <div className="px-4 sm:px-6 lg:px-8">
-              {<Usertable />}
+              {<CompanyTable companytype= { type } />}
             </div>
           </main>
         </div>

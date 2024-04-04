@@ -112,6 +112,9 @@ User.init(
     zip: {
       type: DataTypes.STRING(10)
     },
+    sessionId: {
+      type: DataTypes.STRING(255)
+    },
   },
   {
     sequelize: db,

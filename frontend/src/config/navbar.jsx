@@ -36,46 +36,46 @@ const logout = () => {
         { 
           showedname: "Dashboard", 
           options: [
-            { name: 'Dashboard', href: '/homepage', icon: HomeIcon, current: false, grants: 'dashboard' },
-            { name: 'Rendicontazione', href: '/reporting', icon: ClockIcon, current: false, grants: 'calendar' },
-            { name: 'Calendario', href: '/calendar', icon: CalendarDaysIcon, current: false, grants: 'projects' },
+            { name: 'Dashboard', href: '/homepage', icon: HomeIcon, current: false, permissionss: 'dashboard' },
+            { name: 'Rendicontazione', href: '/reporting', icon: ClockIcon, current: false, permissionss: 'calendar' },
+            { name: 'Calendario', href: '/calendar', icon: CalendarDaysIcon, current: false, permissionss: 'projects' },
           ], 
         },
         {
           showedname: "Analitycs",
           options: [
-            { name: 'Report', href: '/report', icon: ChartPieIcon, current: false, grants: 'report' },
+            { name: 'Report', href: '/report', icon: ChartPieIcon, current: false, permissionss: 'report' },
           ],
         },
         { 
           showedname: "Project Orders", 
           options: [
-            { name: 'Offerte', href: '/offer', icon: DocumentTextIcon, current: false, grants: 'offerte' },
-            { name: 'Commesse', href: '/orders', icon: Squares2X2Icon, current: false, grants: 'commesse' },
-            { name: 'Archivio Commesse', href: '/orders/archive', icon: ArchiveBoxIcon, current: false, grants: 'archiviocommesse' },
+            { name: 'Offerte', href: '/offer', icon: DocumentTextIcon, current: false, permissionss: 'offerte' },
+            { name: 'Commesse', href: '/orders', icon: Squares2X2Icon, current: false, permissionss: 'commesse' },
+            { name: 'Archivio Commesse', href: '/orders/archive', icon: ArchiveBoxIcon, current: false, permissionss: 'archiviocommesse' },
           ], 
         },
         { 
           showedname: "Costs", 
           options: [
-            { name: 'Acquisti', href: '#', icon: ShoppingCartIcon, current: false, grants: 'acquisti' },
+            { name: 'Acquisti', href: '#', icon: ShoppingCartIcon, current: false, permissionss: 'acquisti' },
           ], 
         },
         { 
           showedname: "Registry", 
           options: [
-            { name: 'Costi', href: '#', icon: BanknotesIcon, current: false, grants: 'costi' },
-            { name: 'Fornitori', href: '#', icon: FolderIcon, current: false, grants: 'fornitori' },
-            { name: 'Clienti', href: '#', icon: UsersIcon, current: false, grants: 'clienti' },
-            { name: 'Prodotti', href: '#', icon: DocumentDuplicateIcon, current: false, grants: 'prodotti' },
+            { name: 'Costi', href: '#', icon: BanknotesIcon, current: false, permissionss: 'costi' },
+            { name: 'Fornitori', href: '#', icon: FolderIcon, current: false, permissionss: 'fornitori' },
+            { name: 'Clienti', href: '#', icon: UsersIcon, current: false, permissionss: 'clienti' },
+            { name: 'Prodotti', href: '#', icon: DocumentDuplicateIcon, current: false, permissionss: 'prodotti' },
           ], 
         },
         { 
           showedname: "Management", 
           options: [
-            { name: 'Users', href: '/users', icon: UsersIcon, current: false, grants: 'users' },
-            { name: 'Role', href: '#', icon: TagIcon , current: false, grants: 'role' },
-            { name: 'Grants', href: '#', icon: CheckBadgeIcon, current: false, grants: 'grants' },
+            { name: 'Users', href: '/users', icon: UsersIcon, current: false, permissionss: 'users' },
+            { name: 'Role', href: '#', icon: TagIcon , current: false, permissionss: 'role' },
+            { name: 'Permissionss', href: '#', icon: CheckBadgeIcon, current: false, permissionss: 'permissionss' },
           ], 
         },
       ];

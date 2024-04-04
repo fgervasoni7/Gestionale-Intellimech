@@ -1,7 +1,7 @@
 import Role from './role.js';
-import Grant from './grant.js';
+import Permissions from './permissions.js';
 import User from './user.js';
-import RoleGrant from './rolegrant.js';
+import rolepermissions from './rolepermissions.js';
 import Group from './group.js';
 import Subgroup from './subgroup.js';
 import ContractType from './contracttype.js';
@@ -13,8 +13,8 @@ import WorkingSite from './workingsite.js';
 User.belongsTo(Role, { foreignKey: 'role' });
 Role.hasMany(User, { foreignKey: 'role' });
 
-Role.belongsToMany(Grant, { through: RoleGrant, foreignKey: 'role' });
-Grant.belongsToMany(Role, { through: RoleGrant, foreignKey: 'grant' });
+Role.belongsToMany(Permissions, { through: rolepermissions, foreignKey: 'id_role' });
+Permissions.belongsToMany(Role, { through: rolepermissions, foreignKey: 'id_permissions' });
 
 //User is associated with Group
 User.belongsTo(Group, { foreignKey: 'group' });
@@ -50,7 +50,7 @@ WorkingSite.hasMany(User, { foreignKey: 'workingsite' });
 export default {
     User,
     Role,
-    Grant,
-    RoleGrant,
+    Permissions,
+    rolepermissions,
     ContractType,
   };

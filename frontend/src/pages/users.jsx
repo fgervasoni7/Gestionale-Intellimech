@@ -30,55 +30,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function users() {
+export default function users({userdata}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [Propic, setPropic] = useState(null);
   const [open, setOpen] = useState(false)
-  
-
-  const cancelButtonRef = useRef(null)
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    if (!token) {
-      window.location.href = '/';
-    } else {
-        axios.get(`${process.env.REACT_APP_API_URL}/auth/verify`, { headers: { authorization: `Bearer ${token}` } })
-            .then((response) => {
-              console.log('response', response);
-              setUser(response.data.user);
-              setPropic('https://api.dicebear.com/7.x/notionists/svg?seed=' + response.data.user.id_user + '&background=%23fff&radius=50');
-              setLoading(false); // Set loading to false regardless of success or error
-              // Set user data to local storage
-              localStorage.setItem('user', JSON.stringify(response.data.user));
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-              // set a timer and after 5 seconds redirect to login page
-              setInterval(() => {
-                  Cookies.remove('token');
-                  window.location.href = '/';
-              }, 5000);
-            })
-    }
-  }, []);
-
-  if (loading) {
-    return (
-        <div className="flex items-center justify-center h-screen">
-        <div role="status" className="text-center">
-        <img
-            src={Logo}
-            alt="Bouncing Image"
-            className="animate-bounce w-max text-gray-200 fill-blue-600"
-        />
-        <span className="sr-only">Loading...</span>
-        </div>
-    </div>
-    )
-  }
+    setUser(userdata);
+    setPropic('https://api.dicebear.com/7.x/notionists/svg?seed=' + userdata.id_user + '&background=%23fff&radius=50');
+  }, [userdata]);
 
   return (
     <>

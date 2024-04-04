@@ -12,8 +12,8 @@ import { Doceasy } from './scheduler/doceasy.js';
 
 import Role from './models/role.js';
 import User from './models/user.js';
-import Grant from './models/grant.js';
-import RoleGrant from './models/rolegrant.js';
+import Permissions from './models/permissions.js';
+import rolepermissions from './models/rolepermissions.js';
 import Associations from './models/associations.js';
 
 // Caricamento delle variabili d'ambiente

@@ -35,8 +35,8 @@ router.get("/read/:user_id", (req, res) => {
                     attributes: ["id_role", "name"],
                     include: [
                         {
-                            model: sequelize.models.Grant,
-                            attributes: ["id_grant", "name"],
+                            model: sequelize.models.Permission,
+                            attributes: ["id_permission", "name"],
                         },
                     ],
                 },
@@ -78,8 +78,8 @@ router.get("/read/", (req, res) => {
                 attributes: ["id_role", "name"],
                 include: [
                     {
-                        model: sequelize.models.Grant,
-                        attributes: ["id_grant", "name"],
+                        model: sequelize.models.Permission,
+                        attributes: ["id_permission", "description", "route"],
                     },
                 ],
             },
@@ -169,7 +169,7 @@ router.get("/read/", (req, res) => {
 //     }
 // });
 
-// router.get("/grants/", (req, res) => {
+// router.get("/permissionss/", (req, res) => {
 //     // Get the user from the token and return the group name that is a relation
 //     const token = req.headers["authorization"]?.split(" ")[1] || "";
 //     if (!token) {
@@ -198,22 +198,22 @@ router.get("/read/", (req, res) => {
 //                     attributes: ["id_role", "name"],
 //                     include: [
 //                         {
-//                             model: sequelize.models.Grant,
-//                             attributes: ["id_grant", "name"],
+//                             model: sequelize.models.Permission,
+//                             attributes: ["id_permission", "name"],
 //                         },
 //                     ],
 //                 },
 //             ],
 //         }).then((user) => {
 //             if (user) {
-//                 // Remove the RoleGrant property from each grant object
-//                 const grantsWithoutRoleGrant = user.Role.Grants.map(grant => {
-//                     const { RoleGrant, ...grantWithoutRoleGrant } = grant.toJSON();
-//                     return grantWithoutRoleGrant;
+//                 // Remove the rolepermissions property from each permissions object
+//                 const permissionssWithoutrolepermissions = user.Role.Permissionss.map(permissions => {
+//                     const { rolepermissions, ...permissionsWithoutrolepermissions } = permissions.toJSON();
+//                     return permissionsWithoutrolepermissions;
 //                 });
                 
 //                 return res.status(200).json({
-//                     grants: grantsWithoutRoleGrant,
+//                     permissionss: permissionssWithoutrolepermissions,
 //                 });
 //             } else {
 //                 return res.status(401).json({

@@ -3,7 +3,7 @@ import { Dialog, Menu, Transition, Disclosure } from '@headlessui/react'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { Cog6ToothIcon, HomeIcon, CalendarIcon, ArchiveBoxIcon, FolderIcon, DocumentDuplicateIcon, ChartPieIcon, UsersIcon, TagIcon, CheckBadgeIcon, ClockIcon, CalendarDaysIcon, DocumentTextIcon, Squares2X2Icon, BanknotesIcon } from '@heroicons/react/24/outline';
+import { Cog6ToothIcon, HomeIcon, CalendarIcon, ArchiveBoxIcon, FolderIcon, DocumentDuplicateIcon, ChartPieIcon, UsersIcon, TagIcon, CheckBadgeIcon, ClockIcon, CalendarDaysIcon, DocumentTextIcon, Squares2X2Icon, BanknotesIcon, DocumentPlusIcon, DocumentMinusIcon } from '@heroicons/react/24/outline';
 
 
 function classNames(...classes) {
@@ -17,39 +17,6 @@ export default function Navbar() {
 
   useEffect(() => {
     // check if the configuration is present in the local storage
-    //if (localStorage.getItem('fullnavigation') && localStorage.getItem('logo')) {
-    if (false) {
-      const navigationData = JSON.parse(localStorage.getItem('fullnavigation'));
-      const iconComponents = {
-        Cog6ToothIcon,
-        HomeIcon, 
-        CalendarIcon, 
-        ArchiveBoxIcon, 
-        FolderIcon, 
-        DocumentDuplicateIcon, 
-        ChartPieIcon, 
-        UsersIcon, 
-        TagIcon, 
-        CheckBadgeIcon, 
-        ClockIcon, 
-        CalendarDaysIcon, 
-        DocumentTextIcon, 
-        Squares2X2Icon, 
-        BanknotesIcon          // Add other icon components here
-      };
-
-      const updatedNavigationData = navigationData.map(item => ({
-        ...item,
-        options: item.options.map(option => ({
-          ...option,
-          icon: iconComponents[option.icon] || HomeIcon, // Default to HomeIcon if no matching icon found
-        })),
-      }));
-      setFullNavigation(updatedNavigationData);
-      setLogo(localStorage.getItem('logo'));
-    }
-    else
-    {
       axios.get(`${process.env.REACT_APP_API_URL}/user/config`, { headers: { authorization: `Bearer ${Cookies.get('token')}` } })
         .then((response) => {
           console.log('response', response);
@@ -70,7 +37,9 @@ export default function Navbar() {
             CalendarDaysIcon, 
             DocumentTextIcon, 
             Squares2X2Icon, 
-            BanknotesIcon          // Add other icon components here
+            BanknotesIcon,
+            DocumentPlusIcon,
+            DocumentMinusIcon
           };
           
           const updatedNavigationData = navigationData.map(item => ({
@@ -81,17 +50,12 @@ export default function Navbar() {
             })),
           }));
           setFullNavigation(updatedNavigationData);
-          setLogo("./assets/" + response.data.logo);
+          setLogo("/assets/" + response.data.logo);
           setColor(response.data.color);
-          
-          // Save the configuration to the local storage
-          localStorage.setItem('fullnavigation', JSON.stringify(navigationData));
-          localStorage.setItem('logo', "./assets/" + response.data.logo);
         })
         .catch((error) => {
           console.error('Error:', error);
         })
-      }
   }, []);
 
 

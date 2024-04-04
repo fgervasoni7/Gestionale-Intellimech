@@ -40,7 +40,7 @@ export default function Example() {
       })
       .then((response) => {
         setRoles(response.data.roles);
-        console.log("ciao", response.data.roles);
+        console.log(response.data.roles);
       })
       .catch((error) => {
         console.log(error);

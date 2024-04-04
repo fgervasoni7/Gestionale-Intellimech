@@ -1,5 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import logger from '../../utils/logger.js';
 
 // Setup the express router
 const router = express.Router();
@@ -10,12 +11,13 @@ import userdelete from './userdelete.js';
 import userupdate from './userupdate.js';
 import userread from './userread.js';
 import userconfig from './userconfig.js';
-import logger from '../../utils/logger.js';
+import useraccess from './useraccess.js';
 
 router.use('/user', usercreate);
 router.use('/user', userdelete);
 router.use('/user', userupdate);
 router.use('/user', userread);
 router.use('/user', userconfig);
+router.use('/user', useraccess);
 
 export default router;

@@ -88,7 +88,7 @@ const Login = () => {
   //                 type="email"
   //                 autoComplete="email"
   //                 required
-  //                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+  //                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
   //               />
   //             </div>
   //           </div>
@@ -99,7 +99,7 @@ const Login = () => {
   //                 Password
   //               </label>
   //               <div className="text-sm">
-  //                 <a href="#" className="font-semibold text-sky-600 hover:text-sky-500">
+  //                 <a href="#" className="font-semibold text-red-600 hover:text-red-500">
   //                   Forgot password?
   //                 </a>
   //               </div>
@@ -111,7 +111,7 @@ const Login = () => {
   //                 type="password"
   //                 autoComplete="current-password"
   //                 required
-  //                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+  //                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
   //               />
   //             </div>
   //           </div>
@@ -119,7 +119,7 @@ const Login = () => {
   //           <div>
   //             <button
   //               type="submit"
-  //               className="flex w-full justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+  //               className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
   //             >
   //               Sign in
   //             </button>
@@ -177,7 +177,7 @@ const Login = () => {
               type="email"
               autoComplete="email"
               required
-              className="block w-full rounded-md border-gray-300 py-2 px-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 focus:outline-none sm:text-sm"
+              className="block w-full rounded-md border-gray-300 py-2 px-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none sm:text-sm"
             />
           </div>
 
@@ -191,7 +191,7 @@ const Login = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="block w-full rounded-md border-gray-300 py-2 px-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 focus:outline-none sm:text-sm"
+              className="block w-full rounded-md border-gray-300 py-2 px-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none sm:text-sm"
             />
           </div>
 
@@ -201,7 +201,7 @@ const Login = () => {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-500"
+                className="h-4 w-4 border-gray-300 text-red-600 focus:ring-red-500"
               />
               <label htmlFor="remember-me" className="ml-2 block text-sm leading-5 text-gray-900">
                 Remember me
@@ -209,7 +209,7 @@ const Login = () => {
             </div>
 
             <div className="text-sm leading-5">
-              <a href="#" className="font-semibold text-sky-600 hover:text-sky-500">
+              <a href="#" className="font-semibold text-red-600 hover:text-red-500">
                 Forgot password?
               </a>
             </div>
@@ -218,7 +218,7 @@ const Login = () => {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
               Sign in
             </button>

@@ -1,31 +1,31 @@
-// rolegrant-model.js
+// rolepermissions-model.js
 import { DataTypes, Model } from 'sequelize';
 import db from '../utils/db.js';
 
-class RoleGrant extends Model {}
+class rolepermissions extends Model {}
 
-RoleGrant.init(
+rolepermissions.init(
   {
-    id_rolegrant: {
+    id_rolepermission: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    role: {
+    id_role: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    grant: {
+    id_permissions: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
   },
   {
     sequelize: db,
-    modelName: 'RoleGrant',
-    tableName: 'rolegrant',
+    modelName: 'RolePermissions',
+    tableName: 'rolepermissions',
     timestamps: false // Disable timestamps
   }
 );
 
-export default RoleGrant;
+export default rolepermissions;

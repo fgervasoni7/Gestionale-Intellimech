@@ -23,7 +23,7 @@ router.use(cookieparser());
 
 
 router.get("/verify", async (req, res) => {
-    //verify if token is valid and if user is active or not deleted and return user data and get also the information about role and grants
+    //verify if token is valid and if user is active or not deleted and return user data and get also the information about role and permissionss
     try {
         const token = req.headers["authorization"]?.split(" ")[1] || "";
         const User = sequelize.models.User;
@@ -48,7 +48,7 @@ router.get("/verify", async (req, res) => {
         }
 
         const user = await User.findOne({
-            where: { id_user: decoded.id },
+            where: { id_user: decoded.id, sessionId: decoded.sessionId },
             attributes: ["id_user", "name", "surname", "birthdate", "username", "email", "isDeleted", "isActive", "createdAt", "updatedAt"],
             include: [
                 {
@@ -56,8 +56,8 @@ router.get("/verify", async (req, res) => {
                     attributes: ["id_role", "name"],
                     include: [
                         {
-                            model: sequelize.models.Grant,
-                            attributes: ["id_grant", "name"],
+                            model: sequelize.models.Permission,
+                            attributes: ["id_permission", "description"],
                         },
                     ],
                 },
@@ -70,8 +70,8 @@ router.get("/verify", async (req, res) => {
             });
         }
 
-        // Sending the user data without RoleGrant and Grants data
-        const userDataWithoutGrants = {
+        // Sending the user data without rolepermissions and Permissionss data
+        const userDataWithoutPermissions = {
             id_user: user.id_user,
             name: user.name,
             surname: user.surname,
