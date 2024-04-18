@@ -11,7 +11,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example() {
+export default function Example({ permissions }) {
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
@@ -80,6 +80,35 @@ export default function Example() {
     setSelectedPeople([]);
   }
 
+  const ForceLogout = (user) => {
+    axios
+    .post(`${process.env.REACT_APP_API_URL}/user/force/logout/${user}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + Cookies.get('token'),
+      },
+    })
+    .then((response) => {
+      console.log(response.data.offer);
+      axios
+      .get(`${process.env.REACT_APP_API_URL}/user/read`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + Cookies.get('token'),
+        },
+      })
+      .then((response) => {
+        setOffer(response.data.offer);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/user/read`, {
@@ -96,6 +125,8 @@ export default function Example() {
         console.log(error);
       });
   }, []); // Empty dependency array
+
+
 
   function handleSearchInputChange(event) {
     setSearchQuery(event.target.value);
@@ -122,7 +153,7 @@ export default function Example() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <Transition.Root show={open} as={Fragment}>
-       <Dialog as="div" className="relative z-10" onClose={setOpen}>
+       <Dialog as="div" className="relative z-20" onClose={setOpen}>
         <div className="fixed inset-0" />
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
@@ -178,14 +209,14 @@ export default function Example() {
               value={searchQuery}
               onChange={handleSearchInputChange}
               placeholder="Search by invoice ID or company name"
-              className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 sm:text-sm"
             />
           </div>
           <div className="flex-grow w-full max-w-xs flex items-end mb-4">
             <select
               value={selectedStatus}
               onChange={handleStatusSelectChange}
-              className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 sm:text-sm"
             >
               <option value="">All Years</option>
               {/* get the status from user */}
@@ -204,12 +235,14 @@ export default function Example() {
               </button>
             </div>
             <div className="">
+            {permissions && permissions.some(permission => permission.actionType === 'Create') && (
               <button
                 onClick={() => setOpen(true)}
                 className="block rounded-md bg-red-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                >
+              >
                 Create
               </button>
+            )}
             </div>
           </div>
         </div>
@@ -273,7 +306,7 @@ export default function Example() {
                       Role
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Status
+                      Stato
                     </th>
                     <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-3">
                       <span className="sr-only">Edit</span>
@@ -337,13 +370,17 @@ export default function Example() {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
                         <div className="flex items-center space-x-2">
+                          {permissions && permissions.some(permission => permission.actionType === 'Update') && (
                           <button 
                             type="button" 
                             className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                            onClick={() => console.log(user)}>
+                            onClick={() => console.log(person)}>
                             <PencilSquareIcon className="h-5 w-4 text-gray-500" />
                           </button>
-                          <button type="button" className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white">
+                          )}
+                          <button type="button" 
+                                  className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                  onClick={() => ForceLogout(person.id_user)}>
                             <ArrowRightStartOnRectangleIcon className="h-5 w-4 text-gray-500" />
                           </button>
                         </div>

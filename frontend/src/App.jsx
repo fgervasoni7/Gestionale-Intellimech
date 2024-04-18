@@ -13,6 +13,14 @@ import Company from './pages/company';
 import Calendar from './pages/calendar';
 import Reporting from './pages/reporting';
 import Lost from './pages/lost';
+import QuotationRequest from './pages/quotationrequest';
+import Analytics from './pages/analytics';
+import Offer from './pages/offer';
+import SalesOrder from './pages/salesorder';
+import Profile from './pages/profile';
+import Job from './pages/job';
+import Permission from './pages/permissions';
+
 const Logo = './assets/intellimech.svg'
 
 const App = () => {
@@ -23,7 +31,10 @@ const App = () => {
   const [loading, setLoading] = useState(true); // State to track loading status
 
   const checkPermission = (route) => {
-    const permission = permissions.find((permission) => permission.route === route);
+    console.log(permissions);
+    const permission = permissions
+                        .filter((permission) => permission.actionType == "Read")
+                        .find((permission) => permission.route === route);
     return permission ? true : false;
   };
 
@@ -89,8 +100,11 @@ const App = () => {
       return <Lost />;
     }
 
+    //filter the permissions for the route
+    const permissionroute = permissions.filter((permission) => permission.route === path);
+
     // Pass user data to the element
-    return React.cloneElement(element, { userdata: user });
+    return React.cloneElement(element, { userdata: user, permissions: permissionroute });
   };
 
   useEffect(() => {
@@ -119,17 +133,20 @@ const App = () => {
           <Route path="/calendar" element={<ProtectedRoute element={<Calendar />} path="/calendar" />} />
           <Route path="/employees-consultants" element={<ProtectedRoute element={<People />} path="/employees-consultants" />} />
           <Route path="/roles" element={<ProtectedRoute element={<Roles />} path="/roles" />} />
-          <Route path="/grants" element={<ProtectedRoute element={<Lost />} path="/grants" />} />
+          <Route path="/permission" element={<ProtectedRoute element={<Permission />} path="/permission" />} />
           <Route path="/invoices/passive" element={<ProtectedRoute element={<Invoices type="PassivaSdI"/>} path="/invoices/passive" />} />
           <Route path="/invoices/active" element={<ProtectedRoute element={<Invoices type="AttivaSdI"/>} path="/invoices/active" />} />
-          <Route path="/quotation-request" element={<ProtectedRoute element={<Lost />} path="/quotation-request" />} />
-          <Route path="/offer" element={<ProtectedRoute element={<Lost />} path="/offer" />} />
-          <Route path="/sales-order" element={<ProtectedRoute element={<Lost />} path="/sales-order" />} />
-          <Route path="/project" element={<ProtectedRoute element={<Lost />} path="/project" />} />
+          <Route path="/quotation-request" element={<ProtectedRoute element={<QuotationRequest />} path="/quotation-request" />} />
+          <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} path="/analytics" />} />
+          <Route path="/offer" element={<ProtectedRoute element={<Offer />} path="/offer" />} />
+          <Route path="/purchase" element={<ProtectedRoute element={<Offer />} path="/purchase" />} />
+          <Route path="/sales-order" element={<ProtectedRoute element={<SalesOrder />} path="/sales-order" />} />
+          <Route path="/job" element={<ProtectedRoute element={<Job />} path="/job" />} />
           <Route path="/reporting" element={<ProtectedRoute element={<Reporting />} path="/reporting" />} />
           <Route path="/homepage" element={<ProtectedRoute element={<Homepage />} path="/homepage" />} />
           <Route path="/company/clients" element={<ProtectedRoute element={<Company type="client" />} path="/company/clients" />} />
           <Route path="/company/suppliers" element={<ProtectedRoute element={<Company type="suppliers" />} path="/company/suppliers" />} />
+          <Route path="/profile" element={<ProtectedRoute element={<Profile />} path="/profile" />} />
           <Route path="*" element={<Lost />} />
       </Routes>
     </Router>

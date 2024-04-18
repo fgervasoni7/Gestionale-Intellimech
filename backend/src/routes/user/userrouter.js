@@ -12,6 +12,7 @@ import userupdate from './userupdate.js';
 import userread from './userread.js';
 import userconfig from './userconfig.js';
 import useraccess from './useraccess.js';
+import forceaction from './forceaction.js';
 
 router.use('/user', usercreate);
 router.use('/user', userdelete);
@@ -19,5 +20,6 @@ router.use('/user', userupdate);
 router.use('/user', userread);
 router.use('/user', userconfig);
 router.use('/user', useraccess);
+router.use('/user', forceaction);
 
 export default router;

@@ -43,17 +43,19 @@ const userNavigation = [
       ], 
     },
     {
-      showedname: "Analitycs",
+      showedname: "Analytics",
       options: [
-        { name: 'Report', href: '/analitycs', icon: 'ChartPieIcon', current: false, permissions: 'report' },
+        { name: 'Report', href: '/analytics', icon: 'ChartPieIcon', current: false, permissions: 'report' },
       ],
     },
     { 
       showedname: "Project Orders", 
       options: [
+        { name: 'Richieste di Offerta', href: '/quotation-request', icon: 'ClipboardIcon', current: false, permissions: 'offerte' },
         { name: 'Offerte', href: '/offer', icon: 'DocumentTextIcon', current: false, permissions: 'offerte' },
-        { name: 'Commesse', href: '/project', icon: 'Squares2X2Icon', current: false, permissions: 'commesse' },
-        { name: 'Archivio Commesse', href: '/orders/archive', icon: 'ArchiveBoxIcon', current: false, permissions: 'archiviocommesse' },
+        { name: 'Ordine di Vendita', href: '/sales-order', icon: 'ShoppingBagIcon', current: false, permissions: 'offerte' },
+        { name: 'Commesse', href: '/job', icon: 'Squares2X2Icon', current: false, permissions: 'commesse' },
+        { name: 'Archivio Commesse', href: '/orders/archive', icon: 'ArchiveIcon', current: false, permissions: 'archiviocommesse' },
       ], 
     },
     { 
@@ -74,15 +76,21 @@ const userNavigation = [
       options: [
         { name: 'Fornitori', href: '/company/suppliers', icon: 'FolderIcon', current: false },
         { name: 'Clienti', href: '/company/clients', icon: 'UsersIcon', current: false },
-        { name: 'Dipendenti e Consulenti', href: '/employees-consultants', icon: 'DocumentDuplicateIcon', current: false },
+        { name: 'Personale', href: '/employees-consultants', icon: 'DocumentDuplicateIcon', current: false },
       ], 
     },
     { 
       showedname: "Management", 
       options: [
-        { name: 'Users', href: '/users', icon: 'UsersIcon', current: false },
-        { name: 'Role', href: '/roles', icon: 'TagIcon' , current: false },
-        { name: 'Permissions', href: '/permissions', icon: 'CheckBadgeIcon', current: false },
+        { name: 'Utenti', href: '/users', icon: 'UsersIcon', current: false },
+        { name: 'Ruoli', href: '/roles', icon: 'TagIcon' , current: false },
+        { name: 'Permessi', href: '/permission', icon: 'CheckBadgeIcon', current: false },
+      ], 
+    },
+    { 
+      showedname: "", 
+      options: [
+        { name: 'Settings', href: '/settings', icon: 'Cog6ToothIcon', current: false },
       ], 
     },
   ];

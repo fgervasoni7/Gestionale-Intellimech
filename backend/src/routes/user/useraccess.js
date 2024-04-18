@@ -45,7 +45,7 @@ router.get("/access/", async (req, res) => {
                     include: [
                         {
                             model: sequelize.models.Permission,
-                            attributes: ["id_permission", "description", "route"],
+                            attributes: ["id_permission", "description", "route", "actionType"],
                         },
                     ],
                 },

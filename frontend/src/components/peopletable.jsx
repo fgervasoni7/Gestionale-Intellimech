@@ -10,6 +10,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
+function isToday(date) {
+  const today = new Date();
+  const daten = new Date(date);
+  console.log(daten.getDate() === today.getDate() &&
+  daten.getMonth() === today.getMonth())
+  return daten.getDate() === today.getDate() &&
+    daten.getMonth() === today.getMonth();
+}
+
 export default function Example() {
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
@@ -167,7 +176,14 @@ export default function Example() {
                       <td className="whitespace-nowrap py-4 text-sm text-gray-500">{person.name.slice(0, 2).toUpperCase() + person.surname.slice(0, 2).toUpperCase()}</td>                      
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.name}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.surname}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.birthdate ? new Date(person.birthdate).toLocaleDateString() : ''}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                                                        {person && person.birthdate && (
+                                                                                          <>
+                                                                                            {new Date(person.birthdate).toLocaleDateString()}{' '}
+                                                                                            {isToday(person.birthdate) && <span>🎂</span>}
+                                                                                          </>
+                                                                                        )}
+                                                                                        </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.Group.name}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.Subgroup.name}</td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.ContractType.name}</td>

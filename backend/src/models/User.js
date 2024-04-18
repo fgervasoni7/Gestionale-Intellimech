@@ -115,6 +115,10 @@ User.init(
     sessionId: {
       type: DataTypes.STRING(255)
     },
+    changepass: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
   },
   {
     sequelize: db,

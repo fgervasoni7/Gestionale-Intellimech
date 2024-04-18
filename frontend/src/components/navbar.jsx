@@ -3,7 +3,7 @@ import { Dialog, Menu, Transition, Disclosure } from '@headlessui/react'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { Cog6ToothIcon, HomeIcon, CalendarIcon, ArchiveBoxIcon, FolderIcon, DocumentDuplicateIcon, ChartPieIcon, UsersIcon, TagIcon, CheckBadgeIcon, ClockIcon, CalendarDaysIcon, DocumentTextIcon, Squares2X2Icon, BanknotesIcon, DocumentPlusIcon, DocumentMinusIcon } from '@heroicons/react/24/outline';
+import { Cog6ToothIcon, HomeIcon, ClipboardIcon, ShoppingBagIcon, CalendarIcon, ArchiveBoxIcon, FolderIcon, DocumentDuplicateIcon, ChartPieIcon, UsersIcon, TagIcon, CheckBadgeIcon, ClockIcon, CalendarDaysIcon, DocumentTextIcon, Squares2X2Icon, BanknotesIcon, DocumentPlusIcon, DocumentMinusIcon } from '@heroicons/react/24/outline';
 
 
 function classNames(...classes) {
@@ -39,7 +39,9 @@ export default function Navbar() {
             Squares2X2Icon, 
             BanknotesIcon,
             DocumentPlusIcon,
-            DocumentMinusIcon
+            DocumentMinusIcon,
+            ShoppingBagIcon,
+            ClipboardIcon
           };
           
           const updatedNavigationData = navigationData.map(item => ({
@@ -101,18 +103,6 @@ export default function Navbar() {
               </ul>
             </li>
           ))}
-          <li className="mt-auto">
-            <a
-              href="#"
-              className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-red-600"
-            >
-              <Cog6ToothIcon
-                className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-red-600"
-                aria-hidden="true"
-              />
-              Settings
-            </a>
-          </li>
         </ul>
       </nav>
     </>

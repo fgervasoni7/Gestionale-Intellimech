@@ -201,11 +201,10 @@ export default function company({ companytype }) {
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {companies.map((invoice) => (
                     <tr key={invoice.id_invoices}>
-                      <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">{invoice.Code}</td>
+                        <td className="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">{invoice.Code}</td>
                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.name}</td>
                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.VAT}</td>
                         <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.Fiscal_Code}</td>
-
                     </tr>
                   ))}
                 </tbody>

@@ -30,7 +30,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function users({userdata}) {
+export default function users({userdata, permissions}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -41,6 +41,8 @@ export default function users({userdata}) {
     setUser(userdata);
     setPropic('https://api.dicebear.com/7.x/notionists/svg?seed=' + userdata.id_user + '&background=%23fff&radius=50');
   }, [userdata]);
+
+  console.log("permissions", permissions);
 
   return (
     <>
@@ -105,7 +107,7 @@ export default function users({userdata}) {
         </div>
 
         <div className="lg:pl-72">
-          <div className="sticky top-0  lg:mx-auto lg:max-w-7xl lg:px-8">
+          <div className="sticky top-0 z-10 lg:mx-auto lg:px-8"> {/* Removed lg:max-w-7xl */}
             <div className="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none">
               <button
                 type="button"
@@ -182,7 +184,7 @@ export default function users({userdata}) {
           <main className="py-10">
             
             <div className="px-4 sm:px-6 lg:px-8">
-              {<Usertable />}
+              {<Usertable permissions={permissions} />}
             </div>
           </main>
         </div>

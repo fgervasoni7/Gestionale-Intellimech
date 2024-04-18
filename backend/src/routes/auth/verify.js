@@ -49,19 +49,7 @@ router.get("/verify", async (req, res) => {
 
         const user = await User.findOne({
             where: { id_user: decoded.id, sessionId: decoded.sessionId },
-            attributes: ["id_user", "name", "surname", "birthdate", "username", "email", "isDeleted", "isActive", "createdAt", "updatedAt"],
-            include: [
-                {
-                    model: sequelize.models.Role,
-                    attributes: ["id_role", "name"],
-                    include: [
-                        {
-                            model: sequelize.models.Permission,
-                            attributes: ["id_permission", "description"],
-                        },
-                    ],
-                },
-            ],
+            attributes: ["id_user", "name", "surname", "birthdate", "username", "email", "isDeleted", "isActive", "createdAt", "updatedAt", "sessionId"],
         });
 
         if (!user || !user.isActive) {
@@ -70,19 +58,12 @@ router.get("/verify", async (req, res) => {
             });
         }
 
-        // Sending the user data without rolepermissions and Permissionss data
-        const userDataWithoutPermissions = {
-            id_user: user.id_user,
-            name: user.name,
-            surname: user.surname,
-            username: user.username,
-            birthdate: user.birthdate,
-            email: user.email,
-            isDeleted: user.isDeleted,
-            isActive: user.isActive,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        };
+        //check if the sessionId is the same in the token and in the user
+        if (user.sessionId !== decoded.sessionId) {
+            return res.status(401).json({
+                message: "Unauthorized",
+            });
+        }
 
         return res.status(200).json({
             user: user,
