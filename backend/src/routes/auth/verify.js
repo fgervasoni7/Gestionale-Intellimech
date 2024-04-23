@@ -65,8 +65,18 @@ router.get("/verify", async (req, res) => {
             });
         }
 
+        const respuser = {
+            id_user: user.id_user,
+            name: user.name,
+            surname: user.surname,
+            birthdate: user.birthdate,
+            username: user.username,
+            email: user.email,
+        };
+
         return res.status(200).json({
-            user: user,
+            message: "Authorized",
+            user: respuser,
         });
     } catch (error) {
         Logger("error", error, null, "auth");

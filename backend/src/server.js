@@ -34,8 +34,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 import router from './routes/router.js';
-import Company from './models/company.js';
-import Invoices from './models/invoice.js';
 
 app.use('/', router);
 
