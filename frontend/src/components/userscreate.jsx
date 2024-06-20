@@ -8,6 +8,7 @@ export default function UserCreateForm() {
   const [errorMessages, setErrorMessages] = useState([]);
   const [roles, setRoles] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [subgroups, setSubgroups] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
 
@@ -23,6 +24,15 @@ export default function UserCreateForm() {
       })
 
     axios.get(`${process.env.REACT_APP_API_URL}/group/read`,  { headers: { authorization: `Bearer ${token}` } })
+      .then((response) => {
+        console.log('response', response);
+        setGroups(response.data.groups);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+
+    axios.get(`${process.env.REACT_APP_API_URL}/subgroup/read`,  { headers: { authorization: `Bearer ${token}` } })
       .then((response) => {
         console.log('response', response);
         setGroups(response.data.groups);
@@ -64,8 +74,8 @@ export default function UserCreateForm() {
       { /* Account Information */ }
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">User Information</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
+          <h2 className="text-base font-semibold leading-7 text-gray-900">Informazioni sull'utente</h2>
+          <p className="mt-1 text-sm leading-6 text-gray-600">Utilizza un indirizzo email valido e attivo, recapiteremo li eventuali comunicazioni.</p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
@@ -82,10 +92,10 @@ export default function UserCreateForm() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                 />
               </div>
-              <p className="mt-2 text-sm text-gray-500">We will use this email to communicate the user password.</p>
+              <p className="mt-2 text-sm text-gray-500">Utilizzeremo questa email per comunicare la password dell'utente.</p>
             </div>
 
-            <div className="sm:col-span-3">
+            <div className="sm:col-span-2">
               <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
                 Ruolo
               </label>
@@ -103,7 +113,7 @@ export default function UserCreateForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-3">
+            <div className="sm:col-span-2">
               <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
                 Gruppo
               </label>
@@ -116,6 +126,24 @@ export default function UserCreateForm() {
                 >
                   {groups.map((group) => (
                     <option value={group.id_group}>{group.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
+                Sotto gruppo
+              </label>
+              <div className="mt-2">
+                <select
+                  id="group"
+                  name="group"
+                  autoComplete="group-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                >
+                  {subgroups.map((subgroup) => (
+                    <option value={subgroup.id_subgroup}>{subgroup.name}</option>
                   ))}
                 </select>
               </div>

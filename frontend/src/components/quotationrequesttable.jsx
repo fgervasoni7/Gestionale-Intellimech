@@ -252,16 +252,7 @@ export default function Example({ permissions }) {
             <div className="relative">
               <table className="min-w-full table-fixed divide-y divide-gray-300">
                 <thead>
-                  <tr>
-                    <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
-                      <input
-                        type="checkbox"
-                        className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
-                        ref={checkbox}
-                        checked={checked}
-                        onChange={toggleAll}
-                      />
-                    </th>                    
+                  <tr>        
                     <th scope="col" className="px-3 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
                       
                     </th>
@@ -292,45 +283,39 @@ export default function Example({ permissions }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {quotationrequests.map((quotationrequest) => (
-                    <tr key={quotationrequest.id_user} className={selectedQuotationRequest.includes(quotationrequest) ? 'bg-gray-50' : undefined}>
-                      <td className="relative px-7 sm:w-12 sm:px-6">
-                        {selectedQuotationRequest.includes(quotationrequest) && (
-                          <div className="absolute inset-y-0 left-0 w-0.5 bg-red-600" />
-                        )}
-                        <input
-                          type="checkbox"
-                          className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
-                          value={quotationrequest.email}
-                          checked={selectedQuotationRequest.includes(quotationrequest)}
-                          onChange={(e) =>
-                            setSelectedQuotationRequest(
-                              e.target.checked
-                                ? [...selectedQuotationRequest, quotationrequest]
-                                : selectedQuotationRequest.filter((p) => p !== quotationrequest)
-                            )
-                          }
-                        />
-                      </td>
-                      <td
-                        className={classNames(
-                          'whitespace-nowrap px-3 py-4 pr-3 text-sm font-medium',
-                          selectedQuotationRequest.includes(quotationrequest) ? 'text-red-600' : 'text-gray-900'
-                        )}
+                  {quotationrequests.length > 0 ? (
+                    quotationrequests.map((quotationrequest) => (
+                      <tr
+                        key={quotationrequest.id_user}
+                        className={selectedQuotationRequest.includes(quotationrequest) ? 'bg-gray-50' : undefined}
                       >
-                        {quotationrequest.name}
-                      </td>
-                      <td className="whitespace-normal max-w-[100px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words max-h-[100px] overflow-y-auto">
-                        {quotationrequest.description}
-                      </td>
-                      <td className="whitespace-normal max-w-[200px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words">{quotationrequest.Company.name}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{quotationrequest.Category.name}<br/>{quotationrequest.Subcategory.name}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{quotationrequest.TechnicalArea.code}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{quotationrequest.createdAt ? new Date(quotationrequest.createdAt).toLocaleDateString() : ''}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {
-                          // Use a ternary operator to determine the status class
-                          quotationrequest.status === 'In Attesa' ? (
+                        <td
+                          className={classNames(
+                            'whitespace-nowrap px-3 py-4 pr-3 text-sm font-medium',
+                            selectedQuotationRequest.includes(quotationrequest) ? 'text-red-600' : 'text-gray-900'
+                          )}
+                        >
+                          {quotationrequest.name}
+                        </td>
+                        <td className="whitespace-normal max-w-[100px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words max-h-[100px] overflow-y-auto">
+                          {quotationrequest.description}
+                        </td>
+                        <td className="whitespace-normal max-w-[200px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words">
+                          {quotationrequest.Company.name}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {quotationrequest.Category.name}
+                          <br />
+                          {quotationrequest.Subcategory.name}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {quotationrequest.TechnicalArea.code}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {quotationrequest.createdAt ? new Date(quotationrequest.createdAt).toLocaleDateString() : ''}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {quotationrequest.status === 'In Attesa' ? (
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                               In Attesa
                             </span>
@@ -350,36 +335,40 @@ export default function Example({ permissions }) {
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                               Nessuno
                             </span>
-                          )
-                        }
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{quotationrequest.createdByUser?.name.slice(0, 2).toUpperCase() + quotationrequest.createdByUser?.surname.slice(0, 2).toUpperCase()}</td>
-                      <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                        <div className="flex items-center space-x-2">
-                          {true && (
-                          <>
-                          <button 
-                            type="button" 
-                            className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                            onClick={() => Accept(quotationrequest.id_quotationrequest)}
-                            disabled={quotationrequest.status === 'Approvata' || quotationrequest.status === 'Rifiutata' || quotationrequest.status === 'Scaduta' ? true : false}
-                            >
-                            <CheckIcon className="h-5 w-4 text-gray-500" />
-                          </button>
-                          <button 
-                            type="button" 
-                            className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                            onClick={() => Refuse(quotationrequest.id_quotationrequest)}
-                            disabled={quotationrequest.status === 'Approvata' || quotationrequest.status === 'Rifiutata' || quotationrequest.status === 'Scaduta' ? true : false}
-                            >
-                            <XMarkIcon className="h-5 w-4 text-gray-500" />
-                          </button>
-                          </>
                           )}
-                        </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {quotationrequest.createdByUser?.name.slice(0, 2).toUpperCase() + quotationrequest.createdByUser?.surname.slice(0, 2).toUpperCase()}
+                        </td>
+                        <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              type="button"
+                              className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                              onClick={() => Accept(quotationrequest.id_quotationrequest)}
+                              disabled={['Approvata', 'Rifiutata', 'Scaduta'].includes(quotationrequest.status)}
+                            >
+                              <CheckIcon className="h-5 w-4 text-gray-500" />
+                            </button>
+                            <button
+                              type="button"
+                              className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                              onClick={() => Refuse(quotationrequest.id_quotationrequest)}
+                              disabled={['Approvata', 'Rifiutata', 'Scaduta'].includes(quotationrequest.status)}
+                            >
+                              <XMarkIcon className="h-5 w-4 text-gray-500" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="8" className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                        Non ci sono richieste di offerta
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

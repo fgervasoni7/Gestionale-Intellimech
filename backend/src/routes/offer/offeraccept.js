@@ -50,7 +50,6 @@ router.post("/accept/:id", async (req, res) => {
         const salesOrder = await SalesOrder.create({
             name: name,
             offer: offer.id_offer,
-            status: ""
         });
 
         res.status(200).json({

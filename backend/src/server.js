@@ -77,7 +77,6 @@ if(process.env.ssl === 'true') {
         })        
 }
 
+// doceasy.start();
 doceasy.getActiveInvoices();
-doceasy.getPassiveInvoices();
-
-doceasy.start();
+doceasy.checkCompany();

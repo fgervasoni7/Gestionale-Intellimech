@@ -19,6 +19,11 @@ salesorder.init(
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'Da Fatturare'
+    },
     notes: {
       type: DataTypes.STRING,
     }

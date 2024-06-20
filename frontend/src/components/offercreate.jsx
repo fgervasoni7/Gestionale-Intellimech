@@ -2,84 +2,84 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { CheckBadgeIcon, XCircleIcon } from '@heroicons/react/20/solid';
+import Select from "react-tailwindcss-select";
 
 export default function UserCreateForm() {
   const [createSuccess, setCreateSuccess] = useState(null);
   const [errorMessages, setErrorMessages] = useState('');
-  const [quotationrequest, setQuotationRequest] = useState([]);
+  const [quotationRequest, setQuotationRequest] = useState([]);
   const [category, setCategory] = useState([]);
   const [subcategory, setSubcategory] = useState([]);
+  const [users, setUsers] = useState([]);
   const [technicalArea, setTechnicalArea] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [chips, setChips] = useState([]);
+
+  const handleChange = (newChips) => setChips(newChips);
+
+  const handleTeamChange = (value) => setSelectedTeam(value);
 
   useEffect(() => {
     const token = Cookies.get('token');
-    // Fetching company data
-    axios.get(`${process.env.REACT_APP_API_URL}/quotationrequest/read/free`, { 
-      headers: { authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      console.log(response.data.quotationrequest);
-      setQuotationRequest(response.data.quotationrequest);
-    })
-    .catch((error) => {
-      console.error('Error fetching company data:', error);
-    });
+    const fetchData = async () => {
+      try {
+        const [
+          quotationRequestRes,
+          categoryRes,
+          technicalAreaRes,
+          usersRes,
+        ] = await Promise.all([
+          axios.get(`${process.env.REACT_APP_API_URL}/quotationrequest/read/free`, { headers: { authorization: `Bearer ${token}` } }),
+          axios.get(`${process.env.REACT_APP_API_URL}/category/read`, { headers: { authorization: `Bearer ${token}` } }),
+          axios.get(`${process.env.REACT_APP_API_URL}/technicalarea/read`, { headers: { authorization: `Bearer ${token}` } }),
+          axios.get(`${process.env.REACT_APP_API_URL}/user/read`, { headers: { authorization: `Bearer ${token}` } }),
+        ]);
 
-    // Fetching category data
-    axios.get(`${process.env.REACT_APP_API_URL}/category/read`, { headers: { authorization: `Bearer ${token}` } })
-    .then((response) => {
-      setCategory(response.data.categories);
-    })
-    .catch((error) => {
-      console.error('Error fetching category data:', error);
-    });
+        setQuotationRequest(quotationRequestRes.data.quotationrequest);
+        setCategory(categoryRes.data.categories);
+        setTechnicalArea(technicalAreaRes.data.technicalareas);
+        setUsers(usersRes.data.users.map((user) => ({
+          value: user.id_user,
+          label: `${user.name} ${user.surname}`,
+        })));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-    // Fetching technical area data
-    axios.get(`${process.env.REACT_APP_API_URL}/technicalarea/read`, { headers: { authorization: `Bearer ${token}` } })
-    .then((response) => {
-      setTechnicalArea(response.data.technicalareas);
-    })
-    .catch((error) => {
-      console.error('Error fetching technical area data:', error);
-    });
+    fetchData();
   }, []);
 
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = async (event) => {
     const token = Cookies.get('token');
-    // Fetching subcategories with the selected category
-    axios.get(`${process.env.REACT_APP_API_URL}/subcategory/read/${event.target.value}`, { headers: { authorization: `Bearer ${token}` } })
-    .then((response) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/subcategory/read/${event.target.value}`, {
+        headers: { authorization: `Bearer ${token}` },
+      });
       setSubcategory(response.data.subcategories);
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error('Error fetching subcategory data:', error);
-    });
+    }
   };
 
-  const createOffer = (event) => {
+  const createOffer = async (event) => {
     event.preventDefault();
     const token = Cookies.get('token');
     const form = document.forms.createoffer;
     const formData = new FormData(form);
-    // Converting formData to JSON
-    let jsonObject = {};
-    formData.forEach((value, key) => {
-      jsonObject[key] = value;
-    });
-    console.log(jsonObject);
-  
-    axios.post(`${process.env.REACT_APP_API_URL}/offer/create`, jsonObject, { headers: { authorization: `Bearer ${token}` } })
-    .then((response) => {
+    const jsonObject = Object.fromEntries(formData.entries());
+    jsonObject.team = selectedTeam?.map((team) => team.value);
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/offer/create`, jsonObject, { headers: { authorization: `Bearer ${token}` } });
       setCreateSuccess(true);
-    })
-    .catch((error) => {
-      setErrorMessages(error.response.data.message);
+    } catch (error) {
+      setErrorMessages(error.response?.data?.message || 'An error occurred');
       setCreateSuccess(false);
-    });
+    }
   };
 
   return (
-    <form name='createoffer'>
+    <form name="createoffer">
       {/* Account Information */}
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
@@ -87,9 +87,8 @@ export default function UserCreateForm() {
           <p className="mt-1 text-sm leading-6 text-gray-600">Ricorda, i dati inseriti ora saranno quelli che verranno utilizzati per creare poi l'offerta</p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
             <div className="col-span-full">
-              <label htmlFor="company" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="quotationrequest" className="block text-sm font-medium leading-6 text-gray-900">
                 Richiesta di offerta
               </label>
               <div className="mt-2">
@@ -99,18 +98,20 @@ export default function UserCreateForm() {
                   autoComplete="company-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                 >
-                  {quotationrequest.map((item) => (
-                    item.status == "Approvata" && (
-                    <option key={item.id_quotationrequest} value={item.id_quotationrequest}>{item.name + " - " + item.Company.name}</option>
+                  {quotationRequest.map((item) =>
+                    item.status === "Approvata" && (
+                      <option key={item.id_quotationrequest} value={item.id_quotationrequest}>
+                        {`${item.name} - ${item.Company.name}`}
+                      </option>
                     )
-                  ))}
+                  )}
                 </select>
               </div>
             </div>
 
-            <div className="sm:col-span-3">
-              <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
-                Ore di lavoro
+            <div className="sm:col-span-1">
+              <label htmlFor="hour" className="block text-sm font-medium leading-6 text-gray-900">
+                Ore
               </label>
               <div className="mt-2">
                 <input
@@ -122,24 +123,49 @@ export default function UserCreateForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-3">
-              <label htmlFor="subcategory" className="block text-sm font-medium leading-6 text-gray-900">
+            <div className="sm:col-span-2">
+              <label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">
                 Valore
               </label>
-              <div className="mt-2">
-                  <input
-                    id="amount"
-                    name="amount"
-                    type="number"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                    step="0.01" 
-                  />
+              <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-500 sm:text-sm">€</span>
+                </div>
+                <input
+                  type="text"
+                  name="amount"
+                  id="amount"
+                  className="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                  placeholder="0.00"
+                  aria-describedby="price-currency"
+                />
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <span className="text-gray-500 sm:text-sm" id="price-currency">
+                  EUR
+                </span>
               </div>
             </div>
 
-            
+            </div>
+
             <div className="sm:col-span-3">
-              <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="team" className="block text-sm font-medium leading-6 text-gray-900">
+                Team
+              </label>
+              <div className="mt-2">
+                <Select
+                  id="team"
+                  name="team"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                  value={selectedTeam}
+                  onChange={handleTeamChange}
+                  isMultiple={true}
+                  options={users}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="estimatedstart" className="block text-sm font-medium leading-6 text-gray-900">
                 Data di inizio stimata
               </label>
               <div className="mt-2">
@@ -149,27 +175,33 @@ export default function UserCreateForm() {
                   type="date"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
                   min={new Date().toISOString().split('T')[0]}
-                  default = {new Date().toISOString().split('T')[0]}
+                  defaultValue={new Date().toISOString().split('T')[0]}
+                  onChange={(e) => {
+                    const endDateInput = document.getElementById('estimatedend');
+                    if (endDateInput.value < e.target.value) {
+                      endDateInput.value = e.target.value;
+                    }
+                    endDateInput.min = e.target.value;
+                  }}
                 />
               </div>
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="subcategory" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="estimatedend" className="block text-sm font-medium leading-6 text-gray-900">
                 Data di fine stimata
               </label>
               <div className="mt-2">
-                  <input
-                    id="estimatedend"
-                    name="estimatedend"
-                    type="date"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6" 
-                    min={new Date().toISOString().split('T')[0]}
-                    default = {new Date().toISOString().split('T')[0]}
-                  />
+                <input
+                  id="estimatedend"
+                  name="estimatedend"
+                  type="date"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  min={new Date().toISOString().split('T')[0]}
+                  defaultValue={new Date().toISOString().split('T')[0]}
+                />
               </div>
             </div>
-
             <div className="col-span-full">
               <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
                 Descrizione
@@ -185,11 +217,150 @@ export default function UserCreateForm() {
                 <p className="mt-1 text-xs text-gray-500">Massimo 150 caratteri</p>
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
+      {/* Category Information */}
+      <div className="space-y-12 py-8">
+        <div className="border-b border-gray-900/10 pb-12">
+          <h2 className="text-base font-semibold leading-7 text-gray-900">Task</h2>
+          <p className="mt-1 text-sm leading-6 text-gray-600">Ricorda, i dati inseriti ora saranno quelli che verranno utilizzati per creare poi l'offerta</p>
+
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="col-span-full">
+              <label htmlFor="quotationrequest" className="block text-sm font-medium leading-6 text-gray-900">
+                Richiesta di offerta
+              </label>
+              <div className="mt-2">
+                <select
+                  id="quotationrequest"
+                  name="quotationrequest"
+                  autoComplete="company-name"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                >
+                  {quotationRequest.map((item) =>
+                    item.status === "Approvata" && (
+                      <option key={item.id_quotationrequest} value={item.id_quotationrequest}>
+                        {`${item.name} - ${item.Company.name}`}
+                      </option>
+                    )
+                  )}
+                </select>
+              </div>
+            </div>
+
+            <div className="sm:col-span-1">
+              <label htmlFor="hour" className="block text-sm font-medium leading-6 text-gray-900">
+                Ore
+              </label>
+              <div className="mt-2">
+                <input
+                  id="hour"
+                  name="hour"
+                  type="number"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-2">
+              <label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">
+                Valore
+              </label>
+              <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-500 sm:text-sm">€</span>
+                </div>
+                <input
+                  type="text"
+                  name="amount"
+                  id="amount"
+                  className="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                  placeholder="0.00"
+                  aria-describedby="price-currency"
+                />
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <span className="text-gray-500 sm:text-sm" id="price-currency">
+                  EUR
+                </span>
+              </div>
+            </div>
+
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="team" className="block text-sm font-medium leading-6 text-gray-900">
+                Team
+              </label>
+              <div className="mt-2">
+                <Select
+                  id="team"
+                  name="team"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                  value={selectedTeam}
+                  onChange={handleTeamChange}
+                  isMultiple={true}
+                  options={users}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-3">
+              <label htmlFor="estimatedstart" className="block text-sm font-medium leading-6 text-gray-900">
+                Data di inizio stimata
+              </label>
+              <div className="mt-2">
+                <input
+                  id="estimatedstart"
+                  name="estimatedstart"
+                  type="date"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  min={new Date().toISOString().split('T')[0]}
+                  defaultValue={new Date().toISOString().split('T')[0]}
+                  onChange={(e) => {
+                    const endDateInput = document.getElementById('estimatedend');
+                    if (endDateInput.value < e.target.value) {
+                      endDateInput.value = e.target.value;
+                    }
+                    endDateInput.min = e.target.value;
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="estimatedend" className="block text-sm font-medium leading-6 text-gray-900">
+                Data di fine stimata
+              </label>
+              <div className="mt-2">
+                <input
+                  id="estimatedend"
+                  name="estimatedend"
+                  type="date"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:max-w-xs sm:text-sm sm:leading-6"
+                  min={new Date().toISOString().split('T')[0]}
+                  defaultValue={new Date().toISOString().split('T')[0]}
+                />
+              </div>
+            </div>
+            <div className="col-span-full">
+              <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
+                Descrizione
+              </label>
+              <div className="mt-2">
+                <textarea
+                  rows={4}
+                  maxLength={150}
+                  name="description"
+                  id="description"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+                />
+                <p className="mt-1 text-xs text-gray-500">Massimo 150 caratteri</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Create Quotation Request Button */}
       <div className="mt-6 flex items-center justify-end gap-x-6">
         {createSuccess === true && (

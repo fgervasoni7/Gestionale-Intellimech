@@ -24,10 +24,16 @@ router.get("/read/", (req, res) => {
     try {
         //get all the invoices making join with the company table
         invoice.findAll({
-            include: {
+            include: [
+            {
                 model: sequelize.models.Company,
                 required: true
+            },
+            {
+                model: sequelize.models.InvoiceLine,
+                required: false
             }
+            ]
         }).then((invoices) => {
             result = invoices;
             sendResponse(result, res);

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
+import Layout from './pages/home';
+
 import Login from './pages/login';
 import Homepage from './pages/homepage';
 import Users from './pages/users';
@@ -20,6 +22,7 @@ import SalesOrder from './pages/salesorder';
 import Profile from './pages/profile';
 import Job from './pages/job';
 import Permission from './pages/permissions';
+import Settings from './pages/settings';
 
 const Logo = './assets/intellimech.svg'
 
@@ -127,27 +130,28 @@ const App = () => {
   return (
     <Router>
       <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/users" element={<ProtectedRoute element={<Users />} path="/users" />} />
-          <Route path="/calendar" element={<ProtectedRoute element={<Calendar />} path="/calendar" />} />
-          <Route path="/employees-consultants" element={<ProtectedRoute element={<People />} path="/employees-consultants" />} />
-          <Route path="/roles" element={<ProtectedRoute element={<Roles />} path="/roles" />} />
-          <Route path="/permission" element={<ProtectedRoute element={<Permission />} path="/permission" />} />
-          <Route path="/invoices/passive" element={<ProtectedRoute element={<Invoices type="PassivaSdI"/>} path="/invoices/passive" />} />
-          <Route path="/invoices/active" element={<ProtectedRoute element={<Invoices type="AttivaSdI"/>} path="/invoices/active" />} />
-          <Route path="/quotation-request" element={<ProtectedRoute element={<QuotationRequest />} path="/quotation-request" />} />
-          <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} path="/analytics" />} />
-          <Route path="/offer" element={<ProtectedRoute element={<Offer />} path="/offer" />} />
-          <Route path="/purchase" element={<ProtectedRoute element={<Offer />} path="/purchase" />} />
-          <Route path="/sales-order" element={<ProtectedRoute element={<SalesOrder />} path="/sales-order" />} />
-          <Route path="/job" element={<ProtectedRoute element={<Job />} path="/job" />} />
-          <Route path="/reporting" element={<ProtectedRoute element={<Reporting />} path="/reporting" />} />
-          <Route path="/homepage" element={<ProtectedRoute element={<Homepage />} path="/homepage" />} />
-          <Route path="/company/clients" element={<ProtectedRoute element={<Company type="client" />} path="/company/clients" />} />
-          <Route path="/company/suppliers" element={<ProtectedRoute element={<Company type="suppliers" />} path="/company/suppliers" />} />
-          <Route path="/profile" element={<ProtectedRoute element={<Profile />} path="/profile" />} />
-          <Route path="*" element={<Lost />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/homepage" element={<ProtectedRoute element={<Homepage />} path="/homepage" />} /> 
+        <Route path="/users" element={<ProtectedRoute element={<Users />} path="/users" />} />
+        <Route path="/calendar" element={<ProtectedRoute element={<Calendar />} path="/calendar" />} />
+        <Route path="/employees-consultants" element={<ProtectedRoute element={<People />} path="/employees-consultants" />} />
+        <Route path="/roles" element={<ProtectedRoute element={<Roles />} path="/roles" />} />
+        <Route path="/permission" element={<ProtectedRoute element={<Permission />} path="/permission" />} />
+        <Route path="/invoices/passive" element={<ProtectedRoute element={<Invoices type="PassivaSdI"/>} path="/invoices/passive" />} />
+        <Route path="/invoices/active" element={<ProtectedRoute element={<Invoices type="AttivaSdI"/>} path="/invoices/active" />} />
+        <Route path="/quotation-request" element={<ProtectedRoute element={<QuotationRequest />} path="/quotation-request" />} />
+        <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} path="/analytics" />} />
+        <Route path="/offer" element={<ProtectedRoute element={<Offer />} path="/offer" />} />
+        <Route path="/purchase" element={<ProtectedRoute element={<Offer />} path="/purchase" />} />
+        <Route path="/sales-order" element={<ProtectedRoute element={<SalesOrder />} path="/sales-order" />} />
+        <Route path="/job" element={<ProtectedRoute element={<Job />} path="/job" />} />
+        <Route path="/reporting" element={<ProtectedRoute element={<Reporting />} path="/reporting" />} />
+        <Route path="/company/clients" element={<ProtectedRoute element={<Company type="client" />} path="/company/clients" />} />
+        <Route path="/company/suppliers" element={<ProtectedRoute element={<Company type="supplier" />} path="/company/suppliers" />} />
+        <Route path="/profile" element={<ProtectedRoute element={<Profile />} path="/profile" />} />
+        <Route path="/settings" element={<ProtectedRoute element={<Settings />} path="/settings" />} />
+        <Route path="*" element={<Lost />} />
       </Routes>
     </Router>
   );

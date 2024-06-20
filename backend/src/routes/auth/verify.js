@@ -49,7 +49,21 @@ router.get("/verify", async (req, res) => {
 
         const user = await User.findOne({
             where: { id_user: decoded.id, sessionId: decoded.sessionId },
-            attributes: ["id_user", "name", "surname", "birthdate", "username", "email", "isDeleted", "isActive", "createdAt", "updatedAt", "sessionId"],
+            attributes: ["id_user", "name", "surname", "birthdate", "username", "email", "isDeleted", "isActive", "createdAt", "updatedAt", "sessionId", "subgroup"],
+            include: [
+                {
+                    model: sequelize.models.Role,
+                    attributes: ["id_role", "name"],
+                },
+                {
+                    model: sequelize.models.Group,
+                    attributes: ["id_group", "name"],
+                },
+                {
+                    model: sequelize.models.Subgroup,
+                    attributes: ["id_subgroup", "name"],
+                }
+            ],
         });
 
         if (!user || !user.isActive) {
@@ -72,6 +86,9 @@ router.get("/verify", async (req, res) => {
             birthdate: user.birthdate,
             username: user.username,
             email: user.email,
+            role: user.Role.name,
+            group: user.Group.name,
+            subgroup: user.Subgroup.name,
         };
 
         return res.status(200).json({

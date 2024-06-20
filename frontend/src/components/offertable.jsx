@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 
 import Notify from './notifypopup';
 import OfferCreate from './offercreate';
+import OfferInformation from './offerinformation';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -17,8 +18,10 @@ export default function Example({ permissions, user }) {
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState([]);
   const [offers, setOffer] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
+  
+  const [showInfo, setShowInfo] = useState(false);
+  const [selectedOfferInfo, setSelectedOfferInfo] = useState({});
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setselectedStatus] = useState('');
@@ -167,8 +170,53 @@ export default function Example({ permissions, user }) {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <Transition.Root show={open} as={Fragment}>
-       <Dialog as="div" className="relative z-20" onClose={setOpen}>
+      <Transition.Root show={showInfo} as={Fragment}>
+        <Dialog className="relative z-20" onClose={setShowInfo}>
+          <div className="fixed inset-0" />
+
+          <div className="fixed inset-0 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+                <Transition.Child
+                  as={Fragment}
+                  enter="transform transition ease-in-out duration-500 sm:duration-700"
+                  enterFrom="translate-x-full"
+                  enterTo="translate-x-0"
+                  leave="transform transition ease-in-out duration-500 sm:duration-700"
+                  leaveFrom="translate-x-0"
+                  leaveTo="translate-x-full"
+                >
+                  <Dialog.Panel className="pointer-events-auto w-screen max-w-7xl">
+                    <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                      <div className="px-4 sm:px-6">
+                        <div className="flex items-start justify-between">
+                          <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
+                            {selectedOfferInfo?.name}
+                          </Dialog.Title>
+                          <div className="ml-3 flex h-7 items-center">
+                            <button
+                              type="button"
+                              className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                              onClick={() => setShowInfo(false)}
+                            >
+                              <span className="absolute -inset-2.5" />
+                              <span className="sr-only">Close panel</span>
+                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="relative mt-6 flex-1 px-4 sm:px-6">{ <OfferInformation offer={selectedOfferInfo} /> }</div>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+      <Transition.Root show={showCreate} as={Fragment}>
+       <Dialog as="div" className="relative z-20" onClose={setShowCreate}>
         <div className="fixed inset-0" />
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
@@ -193,7 +241,7 @@ export default function Example({ permissions, user }) {
                             <button
                               type="button"
                               className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                              onClick={() => setOpen(false)}
+                              onClick={() => setShowCreate(false)}
                             >
                               <span className="absolute -inset-2.5" />
                               <span className="sr-only">Close panel</span>
@@ -216,7 +264,6 @@ export default function Example({ permissions, user }) {
           <p className="mt-2 text-sm text-gray-700">Lista offerte presenti a sistema</p>
         </div>
         {/* Search box and Year filter */}
-        <Notify showPopup={showPopup} />
         <div className="flex flex-wrap justify-between mt-4 mb-4">
           <div className="flex-grow w-full max-w-xs mr-4 mb-4">
             <input
@@ -251,7 +298,7 @@ export default function Example({ permissions, user }) {
             </div>
             <div className="">
               <button
-                onClick={() => setOpen(true)}
+                onClick={() => setShowCreate(true)}
                 className="block rounded-md bg-red-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
               >
                 Create
@@ -266,15 +313,6 @@ export default function Example({ permissions, user }) {
               <table className="min-w-full table-fixed divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
-                      <input
-                        type="checkbox"
-                        className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
-                        ref={checkbox}
-                        checked={checked}
-                        onChange={toggleAll}
-                      />
-                    </th>                    
                     <th scope="col" className="px-3 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
                       
                     </th>
@@ -319,50 +357,61 @@ export default function Example({ permissions, user }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {offers.map((offer) => (
-                    <tr key={offer.id_user} onClick={() => console.log('banana' + offer.id_offer)} className={selectedOffer.includes(offer) ? 'bg-gray-50' : undefined}>
-                      <td className="relative px-7 sm:w-12 sm:px-6">
-                        {selectedOffer.includes(offer) && (
-                          <div className="absolute inset-y-0 left-0 w-0.5 bg-red-600" />
-                        )}
-                        <input
-                          type="checkbox"
-                          className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
-                          value={offer.email}
-                          checked={selectedOffer.includes(offer)}
-                          onChange={(e) =>
-                            setSelectedOffer(
-                              e.target.checked
-                                ? [...selectedOffer, offer]
-                                : selectedOffer.filter((p) => p !== offer)
-                            )
-                          }
-                        />
-                      </td>
-                      <td
-                        className={classNames(
-                          'whitespace-nowrap px-3 py-4 pr-3 text-sm font-medium',
-                          selectedOffer.includes(offer) ? 'text-red-600' : 'text-gray-900'
-                        )}
+                  {offers.length > 0 ? (
+                    offers.map((offer) => (
+                      <tr
+                        key={offer.id_user}
+                        className={selectedOffer.includes(offer) ? 'bg-gray-50' : undefined}
                       >
-                        {offer.name}
-                      </td>
-                      <td className="whitespace-normal max-w-[300px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words">{offer.description ? offer.description : offer.QuotationRequest.description}</td>
-                      <td className="whitespace-normal max-w-[200px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words">{offer.QuotationRequest.Company.name}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.revision}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.hour + " h"}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.amount + " €"}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.QuotationRequest.Category.name}<br/>{offer.QuotationRequest.Subcategory.name}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.QuotationRequest.TechnicalArea.code}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.estimatedstart ? new Date(offer.estimatedstart).toLocaleDateString() : ''}</td>    
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.estimatedend ? new Date(offer.estimatedend).toLocaleDateString() : ''}</td>                                        
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{ offer.status === 'Scaduta' || offer.status === 'Approvata' || offer.status === 'Rifiutata' ? "Nessuna" :
-                                                                                          new Date(offer.deadlineDate).toLocaleDateString()
-                                                                                        }</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {
-                          // Use a ternary operator to determine the status class
-                          offer.status === 'Inviata al cliente' ? (
+                        <td
+                          onClick={() => {
+                            setShowInfo(true);
+                            setSelectedOfferInfo(offer);
+                            console.log(offer);
+                          }}
+                          className={classNames(
+                            'whitespace-nowrap px-3 py-4 pr-3 text-sm font-medium',
+                            selectedOffer.includes(offer) ? 'text-red-600' : 'text-gray-900'
+                          )}
+                        >
+                          {offer.name}
+                        </td>
+                        <td className="whitespace-normal max-w-[300px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words">
+                          {offer.description || offer.QuotationRequest.description}
+                        </td>
+                        <td className="whitespace-normal max-w-[200px] overflow-hidden text-sm text-gray-500 px-3 py-4 break-words">
+                          {offer.QuotationRequest.Company.name}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.revision}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {`${offer.hour} h`}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {`${offer.amount} €`}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.QuotationRequest.Category.name}
+                          <br />
+                          {offer.QuotationRequest.Subcategory.name}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.QuotationRequest.TechnicalArea.code}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.estimatedstart ? new Date(offer.estimatedstart).toLocaleDateString() : ''}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.estimatedend ? new Date(offer.estimatedend).toLocaleDateString() : ''}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {['Scaduta', 'Approvata', 'Rifiutata'].includes(offer.status)
+                            ? 'Nessuna'
+                            : new Date(offer.deadlineDate).toLocaleDateString()}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.status === 'Inviata al cliente' ? (
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                               Inviata
                             </span>
@@ -375,7 +424,7 @@ export default function Example({ permissions, user }) {
                               Rifiutata
                             </span>
                           ) : offer.status === 'Scaduta' ? (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-zinc-100 text-zinc-800">
                               Scaduta
                             </span>
                           ) : offer.status === 'Nuova' ? (
@@ -390,71 +439,86 @@ export default function Example({ permissions, user }) {
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                               Nessuno
                             </span>
-                          )
-                        }
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{offer.createdByUser?.name.slice(0, 2).toUpperCase() + offer.createdByUser?.surname.slice(0, 2).toUpperCase()}</td>                      
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <div className="flex items-center space-x-2">
-                          {offer.createdByUser.id_user == user.id_user && (
-                            <>
-                              {offer.status == "Inviata al cliente" && (
-                              <>
-                              <button 
-                                type="button" 
-                                className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                onClick={() => Accept(offer.id_offer)}
-                                title='Approva'>
-                                <CheckIcon className="h-5 w-4 text-gray-500" />
-                              </button>
-                              <button 
-                                type="button" 
-                                className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                onClick={() => Refuse(offer.id_offer)}
-                                title='Rifiuta'>
-                                <XMarkIcon className="h-5 w-4 text-gray-500" />
-                              </button>
-                              <button 
-                                type="button" 
-                                className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                onClick={() => Revision()}
-                                title='Revisione'>
-                                <ArrowPathIcon className="h-5 w-4 text-gray-500" />
-                              </button>
-                              </>
-                              )}
-                              {offer.status == "Nuova" && (
-                              <>
-                                {false && (
-                                  <button 
-                                    type="button" 
-                                    className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                    onClick={() => console.log(user)}
-                                    title='Visualizza'>
-                                    <EyeIcon className="h-5 w-4 text-gray-500" />
-                                  </button>
-                                )}
-                                <button 
-                                  type="button" 
-                                  className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                  onClick={() => Sent(offer.id_offer)}
-                                  title='Invia al cliente'>
-                                    <PaperAirplaneIcon className="h-5 w-4 text-gray-500" />
-                                </button>                          <button 
-                                type="button" 
-                                className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                                onClick={() => Revision()}
-                                title='Revisione'>
-                                <ArrowPathIcon className="h-5 w-4 text-gray-500" />
-                              </button>
-                              </>
-                              )}
-                            </>
                           )}
-                        </div>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {offer.createdByUser?.name.slice(0, 2).toUpperCase() + offer.createdByUser?.surname.slice(0, 2).toUpperCase()}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <div className="flex items-center space-x-2">
+                            {offer.createdByUser.id_user === user.id_user && (
+                              <>
+                                {offer.status === 'Inviata al cliente' && (
+                                  <>
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                      onClick={() => Accept(offer.id_offer)}
+                                      title="Approva"
+                                    >
+                                      <CheckIcon className="h-5 w-4 text-gray-500" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                      onClick={() => Refuse(offer.id_offer)}
+                                      title="Rifiuta"
+                                    >
+                                      <XMarkIcon className="h-5 w-4 text-gray-500" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                      onClick={() => Revision()}
+                                      title="Revisione"
+                                    >
+                                      <ArrowPathIcon className="h-5 w-4 text-gray-500" />
+                                    </button>
+                                  </>
+                                )}
+                                {offer.status === 'Nuova' && (
+                                  <>
+                                    {false && (
+                                      <button
+                                        type="button"
+                                        className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                        onClick={() => console.log(user)}
+                                        title="Visualizza"
+                                      >
+                                        <EyeIcon className="h-5 w-4 text-gray-500" />
+                                      </button>
+                                    )}
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                      onClick={() => Sent(offer.id_offer)}
+                                      title="Invia al cliente"
+                                    >
+                                      <PaperAirplaneIcon className="h-5 w-4 text-gray-500" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
+                                      onClick={() => Revision()}
+                                      title="Revisione"
+                                    >
+                                      <ArrowPathIcon className="h-5 w-4 text-gray-500" />
+                                    </button>
+                                  </>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="12" className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                        Non ci sono offerte
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

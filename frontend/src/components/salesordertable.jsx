@@ -153,46 +153,8 @@ export default function Example({ permissions }) {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-20" onClose={setOpen}>
-          <div className="fixed inset-0" />
-          <Transition.Child
-            as={Fragment}
-            enter="transform transition ease-in-out duration-500 sm:duration-700"
-            enterFrom="translate-x-full"
-            enterTo="translate-x-0"
-            leave="transform transition ease-in-out duration-500 sm:duration-700"
-            leaveFrom="translate-x-0"
-            leaveTo="translate-x-full"
-          >
-            <Dialog.Panel className="pointer-events-auto w-screen max-w-2xl">
-              <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
-                <div className="px-4 sm:px-6">
-                  <div className="flex items-start justify-between">
-                    <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
-                      Crea una nuova richiesta di offerta
-                    </Dialog.Title>
-                    <div className="ml-3 flex h-7 items-center">
-                      <button
-                        type="button"
-                        className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                        onClick={() => setOpen(false)}
-                      >
-                        <span className="absolute -inset-2.5" />
-                        <span className="sr-only">Close panel</span>
-                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="relative mt-6 flex-1 px-4 sm:px-6"><OfferCreate /></div>
-              </div>
-            </Dialog.Panel>
-          </Transition.Child>
-        </Dialog>
-      </Transition.Root>
       <div className="sm:flex-auto">
-        <h1 className="text-base font-semibold leading-6 text-gray-900">Offerte</h1>
+        <h1 className="text-base font-semibold leading-6 text-gray-900">Ordini di vendita</h1>
         <p className="mt-2 text-sm text-gray-700">Lista offerte presenti a sistema</p>
       </div>
       {/* Search box and Year filter */}
@@ -214,11 +176,7 @@ export default function Example({ permissions }) {
             className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 sm:text-sm"
           >
             {/* get the status from user */}
-            {salesorders.map((salesorder) => (
-              <option key={salesorder.status} value={salesorder.status}>
-                {salesorder.status}
-              </option>
-            ))}
+            <option value="">All</option>
           </select>
 
           <div className="px-4">
@@ -227,14 +185,6 @@ export default function Example({ permissions }) {
               className="block rounded-md bg-red-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
             >
               Export
-            </button>
-          </div>
-          <div className="">
-            <button
-              onClick={() => setOpen(true)}
-              className="block rounded-md bg-red-600 px-3 py-1.5 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-            >
-              Create
             </button>
           </div>
         </div>
@@ -246,16 +196,9 @@ export default function Example({ permissions }) {
               <table className="min-w-full table-fixed divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
-                      <input
-                        type="checkbox"
-                        className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
-                        ref={checkbox}
-                        checked={checked}
-                        onChange={toggleAll}
-                      />
+                    <th scope="col" className="px-3 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
+                      
                     </th>
-                    <th scope="col" className="px-3 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"></th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       Azienda
                     </th>
@@ -276,41 +219,32 @@ export default function Example({ permissions }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {salesorders.map((salesorder) => (
-                    <tr key={salesorder.id_user} onClick={() => console.log('banana' + salesorder.id_offer)} className={selectedOffer.includes(salesorder) ? 'bg-gray-50' : undefined}>
-                      <td className="relative px-7 sm:w-12 sm:px-6">
-                        {selectedOffer.includes(salesorder) && (
-                          <div className="absolute inset-y-0 left-0 w-0.5 bg-red-600" />
-                        )}
-                        <input
-                          type="checkbox"
-                          className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-600"
-                          value={salesorder.email}
-                          checked={selectedOffer.includes(salesorder)}
-                          onChange={(e) =>
-                            setSelectedOffer(
-                              e.target.checked
-                                ? [...selectedOffer, salesorder]
-                                : selectedOffer.filter((p) => p !== salesorder)
-                            )
-                          }
-                        />
-                      </td>
-                      <td
-                        className={classNames(
-                          'whitespace-nowrap px-3 py-4 pr-3 text-sm font-medium',
-                          selectedOffer.includes(salesorder) ? 'text-red-600' : 'text-gray-900'
-                        )}
+                  {salesorders.length > 0 ? (
+                    salesorders.map((salesorder) => (
+                      <tr
+                        key={salesorder.id_user}
+                        onClick={() => console.log('banana' + salesorder.id_offer)}
+                        className={selectedOffer.includes(salesorder) ? 'bg-gray-50' : undefined}
                       >
-                        {salesorder.name}
-                      </td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{salesorder.Offer.QuotationRequest.Company.name}</td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{salesorder.Offer.name}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{salesorder.Offer.description ? salesorder.Offer.description : salesorder.Offer.QuotationRequest.description}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {
-                          // Use a ternary operator to determine the status class
-                          salesorder.status === 'Da fatturare' ? (
+                        <td
+                          className={classNames(
+                            'whitespace-nowrap px-3 py-4 pr-3 text-sm font-medium',
+                            selectedOffer.includes(salesorder) ? 'text-red-600' : 'text-gray-900'
+                          )}
+                        >
+                          {salesorder.name}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                          {salesorder.Offer.QuotationRequest.Company.name}
+                        </td>
+                        <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
+                          <a href={`/offer/${salesorder.Offer.id_offer}`}>{salesorder.Offer.name}</a>
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {salesorder.Offer.description || salesorder.Offer.QuotationRequest.description}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {salesorder.status === 'Da Fatturare' ? (
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                               Da fatturare
                             </span>
@@ -322,12 +256,20 @@ export default function Example({ permissions }) {
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                               Nessuno
                             </span>
-                          )
-                        }
+                          )}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {salesorder.createdByUser?.name.slice(0, 2).toUpperCase() + salesorder.createdByUser?.surname.slice(0, 2).toUpperCase()}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                        Non ci sono ordini di vendita
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{salesorder.createdByUser?.name.slice(0, 2).toUpperCase() + salesorder.createdByUser?.surname.slice(0, 2).toUpperCase()}</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

@@ -6,17 +6,19 @@ import Cookies from 'js-cookie'
 import {
   Bars3Icon,
   BellIcon,
+  ChevronLeftIcon,
   Cog6ToothIcon,
   XMarkIcon,
   
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
+import Production from '../components/homepage/production'
+
 const Logo = './assets/intellimech.svg'
 
 import { userNavigation } from '../config/navbar'
 import Navbar from '../components/navbar'
-import Stats from '../components/stats'
 import { set } from 'date-fns'
 
 function classNames(...classes) {
@@ -174,7 +176,17 @@ export default function homepage({userdata}) {
           </div>
           <main className="py-10">
             <div className="px-4 sm:px-6 lg:px-8">
-              {<Stats/>}
+              {/* make a switch case for the different user types */
+                user?.subgroup == "Produzione" ? (
+                  <Production userdata={userdata}/>
+                ) : user?.subgroup == 'supplier' ? (
+                  "Supplier"
+                ) : user?.subgroup == 'admin' ? (
+                  "Admin"
+                ) : (
+                  "User"
+                )
+              }
             </div>
           </main>
         </div>

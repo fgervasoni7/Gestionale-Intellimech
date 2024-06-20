@@ -16,7 +16,6 @@ const Logo = './assets/intellimech.svg'
 
 import { userNavigation } from '../config/navbar'
 import Navbar from '../components/navbar'
-import Stats from '../components/stats'
 import SalesOrderTable from '../components/salesordertable'
 import { set } from 'date-fns'
 

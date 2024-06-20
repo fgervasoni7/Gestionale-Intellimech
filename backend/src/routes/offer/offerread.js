@@ -25,7 +25,7 @@ router.get("/read/", async (req, res) => {
             include: [
                 {
                     model: sequelize.models.QuotationRequest,
-                    attributes: ["id_quotationrequest", "description"],
+                    attributes: ["id_quotationrequest", "name", "description"],
                     include: [
                         {
                             model: sequelize.models.Company,
@@ -45,6 +45,7 @@ router.get("/read/", async (req, res) => {
                         },
                     ],
                 },
+                { model: sequelize.models.User,  as:'team', attributes: ['id_user', 'name', 'surname'] },
                 { model: sequelize.models.User, as: 'createdByUser', attributes: ['id_user', 'name', 'surname'] },
                 { model: sequelize.models.User, as: 'updatedByUser', attributes: ['id_user', 'name', 'surname'] },
                 { model: sequelize.models.User, as: 'deletedByUser', attributes: ['id_user', 'name', 'surname'] }    

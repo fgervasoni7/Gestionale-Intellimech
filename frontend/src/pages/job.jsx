@@ -16,7 +16,7 @@ const Logo = './assets/intellimech.svg'
 
 import { userNavigation } from '../config/navbar'
 import Navbar from '../components/navbar'
-import Stats from '../components/stats'
+import Job from '../components/jobtable'
 import { set } from 'date-fns'
 
 function classNames(...classes) {
@@ -174,7 +174,7 @@ export default function quotationrequest({userdata}) {
           </div>
           <main className="py-10">
             <div className="px-4 sm:px-6 lg:px-8">
-              { /* Module */ }
+              { <Job  user={userdata}/> }
             </div>
           </main>
         </div>

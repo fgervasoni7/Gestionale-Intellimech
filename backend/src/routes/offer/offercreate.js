@@ -16,13 +16,13 @@ const router = express.Router();
 // __dirname
 const __dirname = path.resolve();
 
-const publickey = fs.readFileSync("./src/keys/public.key", "utf8");
+const publickey = fs.readFileSync(__dirname + "/src/keys/public.key", "utf8");
 
 router.post("/create/", (req, res) => {
-    let { amount, hour, estimatedstart, estimatedend, quotationrequest, name } = req.body;
+    let { amount, hour, estimatedstart, estimatedend, quotationrequest, name, team , tasks} = req.body;
     const token = req.headers.authorization.split(" ")[1];
 
-    if (!amount || !hour || !estimatedstart || !estimatedend || !quotationrequest) {
+    if (!amount || !hour || !estimatedstart || !estimatedend || !quotationrequest || !team || !tasks) {
         return res.status(400).json({
             message: "Bad request, view documentation for more information",
         });
@@ -66,6 +66,13 @@ router.post("/create/", (req, res) => {
             createdBy: decoded.id,
         })
         .then((offer) => {
+            for (const teamMember of team) {
+                offer.addTeam(teamMember);
+            }
+
+            for (const task of tasks) {
+                offer.addTask(task);
+            }
             res.status(200).json({
                 message: "Offer created",
                 offer: offer,

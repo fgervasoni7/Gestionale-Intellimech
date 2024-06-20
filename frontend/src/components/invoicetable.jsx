@@ -164,7 +164,7 @@ export default function invoicetable({ invoicetype }) {
                       className="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 cursor-pointer"
                       onClick={() => handleSort('Number')}
                     >
-                      Invoice ID{' '}
+                      {' '}
                       {sortColumn === 'Number' && (
                         <span>
                           {sortDirection === 'asc' ? (
@@ -179,14 +179,14 @@ export default function invoicetable({ invoicetype }) {
                       scope="col"
                       className="whitespace-nowrap px-2 py-3 text-left text-sm font-semibold text-gray-900 cursor-pointer"
                     >
-                      Company
+                      Azienda
                     </th>
                     <th
                       scope="col"
                       className="whitespace-nowrap px-2 py-3 text-left text-sm font-semibold text-gray-900 cursor-pointer"
                       onClick={() => handleSort('DocumentType')}
                     >
-                      Document Type{' '}
+                      Tipo di documento{' '}
                       {sortColumn === 'DocumentType' && (
                         <span>
                           {sortDirection === 'asc' ? (
@@ -202,7 +202,7 @@ export default function invoicetable({ invoicetype }) {
                       className="whitespace-nowrap px-2 py-3 text-left text-sm font-semibold text-gray-900 cursor-pointer"
                       onClick={() => handleSort('Date')}
                     >
-                      Date{' '}
+                      Data{' '}
                       {sortColumn === 'Date' && (
                         <span>
                           {sortDirection === 'asc' ? (
@@ -218,7 +218,7 @@ export default function invoicetable({ invoicetype }) {
                       className="whitespace-nowrap px-2 py-3 text-left text-sm font-semibold text-gray-900 cursor-pointer"
                       onClick={() => handleSort('InvoiceType')}
                     >
-                      Invoice Type{' '}
+                      Tipo di Fattura{' '}
                       {sortColumn === 'InvoiceType' && (
                         <span>
                           {sortDirection === 'asc' ? (
@@ -229,6 +229,23 @@ export default function invoicetable({ invoicetype }) {
                         </span>
                       )}
                     </th>
+                    <th
+                      scope="col"
+                      className="whitespace-nowrap px-2 py-3 text-left text-sm font-semibold text-gray-900 cursor-pointer"
+                      onClick={() => handleSort('InvoiceType')}
+                    >
+                      Numero di Righe{' '}
+                      {sortColumn === 'InvoiceType' && (
+                        <span>
+                          {sortDirection === 'asc' ? (
+                            <ArrowUpIcon className="h-4 w-4 inline" />
+                          ) : (
+                            <ArrowDownIcon className="h-4 w-4 inline" />
+                          )}
+                        </span>
+                      )}
+                    </th>
+                    
                     <th
                       scope="col"
                       className="whitespace-nowrap px-2 py-3 text-left text-sm font-semibold text-gray-900 cursor-pointer"
@@ -255,8 +272,9 @@ export default function invoicetable({ invoicetype }) {
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">{invoice.DocumentType}</td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.Date ? new Date(invoice.Date).toLocaleDateString() : ''}</td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.InvoiceType}</td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.InvoiceLines.length}</td>
                       <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.Amount + " €"}</td>
-                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.status}</td>
+                      <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">{invoice.Status}</td>
                     </tr>
                   ))}
                 </tbody>

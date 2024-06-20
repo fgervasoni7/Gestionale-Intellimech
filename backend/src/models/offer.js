@@ -17,7 +17,8 @@ Offer.init(
     },
     revision: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      defaultValue: 0
     },
     description: {
       type: DataTypes.STRING(255),

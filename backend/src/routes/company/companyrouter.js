@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 // Routes
-import companyread from './companyread.js';
+import companyread from './companyread.js';;
 
 
 router.use('/company', companyread);
