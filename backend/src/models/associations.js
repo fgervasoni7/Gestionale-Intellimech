@@ -20,6 +20,7 @@ import Reporting from './reporting.js';
 import Tasks from './tasks.js';
 import OfferTeam from './offerteam.js';
 import InvoiceLine from './invoicelines.js';
+import Notification from './notification.js';
 
 // Define associations
 User.belongsTo(Role, { foreignKey: 'role' });
@@ -152,6 +153,19 @@ Tasks.hasMany(Tasks, { foreignKey: 'parentTask' });
 InvoiceLine.belongsTo(Invoice, { foreignKey: 'invoice' });
 Invoice.hasMany(InvoiceLine, { foreignKey: 'invoice' });
 
+//Notification is associated with User in the owner, receiver, createdBy, updatedBy, and deletedBy fields
+Notification.belongsTo(User, { foreignKey: 'owner', as: 'ownerUser' });
+Notification.belongsTo(User, { foreignKey: 'receiver', as: 'receiverUser' });
+Notification.belongsTo(User, { foreignKey: 'createdBy', as: 'createdByUser' });
+Notification.belongsTo(User, { foreignKey: 'updatedBy', as: 'updatedByUser' });
+Notification.belongsTo(User, { foreignKey: 'deletedBy', as: 'deletedByUser' });
+
+User.hasMany(Notification, { foreignKey: 'owner', as: 'ownerUser' });
+User.hasMany(Notification, { foreignKey: 'receiver', as: 'receiverUser' });
+User.hasMany(Notification, { foreignKey: 'createdBy', as: 'createdByUser' });
+User.hasMany(Notification, { foreignKey: 'updatedBy', as: 'updatedByUser' });
+User.hasMany(Notification, { foreignKey: 'deletedBy', as: 'deletedByUser' });
+
 export default {
     User,
     Role,
@@ -170,5 +184,10 @@ export default {
     Offer,
     SalesOrder,
     JobSalesOrder,
-    Job
+    Job,
+    Reporting,
+    Tasks,
+    OfferTeam,
+    InvoiceLine,
+    Notification
   };

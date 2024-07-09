@@ -34,6 +34,7 @@ import salesorder from './salesorder/salesorderrouter.js';
 import job from './job/jobrouter.js';
 import reporting from './reporting/reportingrouter.js';
 import task from './tasks/taskrouter.js';
+import notification from './notification/notificationrouter.js';
 
 router.use((req, res, next) => {
     // Log the request
@@ -89,6 +90,7 @@ router.use('/', salesorder);
 router.use('/', job);
 router.use('/', reporting);
 router.use('/', task);
+router.use('/', notification);
 
 
 export default router;

@@ -4,9 +4,8 @@ import { XMarkIcon, CheckIcon, PaperAirplaneIcon, EyeIcon, ArrowPathIcon } from 
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import Notify from './notifypopup';
+
 import OfferCreate from './jobcreate';
-import salesorder from '../pages/salesorder';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -130,7 +129,6 @@ export default function Example({ permissions, user }) {
           <p className="mt-2 text-sm text-gray-700">Lista commesse presenti a sistema</p>
         </div>
         {/* Search box and Year filter */}
-        <Notify showPopup={showPopup} />
         <div className="flex flex-wrap justify-between mt-4 mb-4">
           <div className="flex-grow w-full max-w-xs mr-4 mb-4">
             <input

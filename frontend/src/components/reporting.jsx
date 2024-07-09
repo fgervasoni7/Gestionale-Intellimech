@@ -102,7 +102,7 @@ export default function Reporting() {
   };
 
   return (
-    <main className="py-10">
+    <main className="">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">Rendicontazione</h1>

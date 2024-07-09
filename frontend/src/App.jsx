@@ -3,157 +3,58 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-import Layout from './pages/home';
+import PrivateRoute from './module/privateRoute';
+import { UserProvider } from './module/userContext';
 
+import Layout from './pages/layout';
 import Login from './pages/login';
-import Homepage from './pages/homepage';
-import Users from './pages/users';
-import Roles from './pages/roles';
-import Invoices from './pages/invoices';
-import People from './pages/people';
-import Company from './pages/company';
-import Calendar from './pages/calendar';
-import Reporting from './pages/reporting';
 import Lost from './pages/lost';
-import QuotationRequest from './pages/quotationrequest';
-import Analytics from './pages/analytics';
-import Offer from './pages/offer';
-import SalesOrder from './pages/salesorder';
-import Profile from './pages/profile';
-import Job from './pages/job';
-import Permission from './pages/permissions';
-import Settings from './pages/settings';
+import Unauthorized from './pages/unauthorized';
+import Homepage from './components/homepage';
+
+import Reporting from './components/reporting';
+import Calendar from './components/calendar/calendar';
+
+import Quotationrequesttable from './components/quotationrequesttable';
+import Offer from './components/offertable';
+import Salesorder from './components/salesordertable';
+import Job from './components/jobtable';
+
+import Invoicetable from './components/invoicetable';
+import Company from './components/company/companytable';
 
 const Logo = './assets/intellimech.svg'
 
 const App = () => {
-  const [permissions, setPermissions] = useState([]);
-  const [authenticated, setAuthenticated] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // State to track loading status
-
-  const checkPermission = (route) => {
-    console.log(permissions);
-    const permission = permissions
-                        .filter((permission) => permission.actionType == "Read")
-                        .find((permission) => permission.route === route);
-    return permission ? true : false;
-  };
-
-  const checkAuth = async () => {
-    const token = Cookies.get('token');
-    if (!token) {
-      setAuthenticated(false);
-      setAuthChecked(true);
-      setLoading(false); // Stop loading when authentication check is complete
-      return;
-    }
-
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/auth/verify`, { headers: { authorization: `Bearer ${token}` } });
-      setAuthenticated(true);
-      setUser(response.data.user);
-      setLoading(false); // Stop loading when authentication check is complete
-    } catch (error) {
-      console.error(error);
-      setAuthenticated(false);
-      setLoading(false); // Stop loading even if there's an error during authentication
-    } finally {
-      setAuthChecked(true);
-    }
-  };
-  
-  const ProtectedRoute = ({ element, path }) => {
-    useEffect(() => {
-      if (!authChecked) {
-        checkAuth();
-      }
-    }, [authChecked]);
-
-    if (loading) {
-      // Render loading indicator
-      return (
-        <div className="flex items-center justify-center h-screen">
-          <div role="status" className="text-center">
-            <img
-              src={Logo}
-              alt="Bouncing Image"
-              className="animate-bounce w-max text-gray-200 fill-blue-600"
-            />
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
-
-    if (!authChecked) {
-      // Authentication check is still in progress, return null or loading indicator
-      return null;
-    }
-
-    if (!authenticated) {
-      Cookies.remove('token');
-      return <Navigate to="/login" />;
-    }
-
-    const hasPermission = checkPermission(path);
-
-    if (!hasPermission) {
-      return <Lost />;
-    }
-
-    //filter the permissions for the route
-    const permissionroute = permissions.filter((permission) => permission.route === path);
-
-    // Pass user data to the element
-    return React.cloneElement(element, { userdata: user, permissions: permissionroute });
-  };
-
-  useEffect(() => {
-    const token = Cookies.get('token');
-    if (token) {
-      axios.get(process.env.REACT_APP_API_URL + '/user/access', {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
-      })
-        .then((response) => {
-          setPermissions(response.data.permissions);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, []);
-    
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/homepage" element={<ProtectedRoute element={<Homepage />} path="/homepage" />} /> 
-        <Route path="/users" element={<ProtectedRoute element={<Users />} path="/users" />} />
-        <Route path="/calendar" element={<ProtectedRoute element={<Calendar />} path="/calendar" />} />
-        <Route path="/employees-consultants" element={<ProtectedRoute element={<People />} path="/employees-consultants" />} />
-        <Route path="/roles" element={<ProtectedRoute element={<Roles />} path="/roles" />} />
-        <Route path="/permission" element={<ProtectedRoute element={<Permission />} path="/permission" />} />
-        <Route path="/invoices/passive" element={<ProtectedRoute element={<Invoices type="PassivaSdI"/>} path="/invoices/passive" />} />
-        <Route path="/invoices/active" element={<ProtectedRoute element={<Invoices type="AttivaSdI"/>} path="/invoices/active" />} />
-        <Route path="/quotation-request" element={<ProtectedRoute element={<QuotationRequest />} path="/quotation-request" />} />
-        <Route path="/analytics" element={<ProtectedRoute element={<Analytics />} path="/analytics" />} />
-        <Route path="/offer" element={<ProtectedRoute element={<Offer />} path="/offer" />} />
-        <Route path="/purchase" element={<ProtectedRoute element={<Offer />} path="/purchase" />} />
-        <Route path="/sales-order" element={<ProtectedRoute element={<SalesOrder />} path="/sales-order" />} />
-        <Route path="/job" element={<ProtectedRoute element={<Job />} path="/job" />} />
-        <Route path="/reporting" element={<ProtectedRoute element={<Reporting />} path="/reporting" />} />
-        <Route path="/company/clients" element={<ProtectedRoute element={<Company type="client" />} path="/company/clients" />} />
-        <Route path="/company/suppliers" element={<ProtectedRoute element={<Company type="supplier" />} path="/company/suppliers" />} />
-        <Route path="/profile" element={<ProtectedRoute element={<Profile />} path="/profile" />} />
-        <Route path="/settings" element={<ProtectedRoute element={<Settings />} path="/settings" />} />
-        <Route path="*" element={<Lost />} />
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/app" element={<Layout />}>
+            <Route index element={<Navigate to="/app/home" />} />
+            <Route path="home" element={<PrivateRoute element={<Homepage />} />} />
+            <Route path="reporting" element={<PrivateRoute element={<Reporting />} />} />
+            <Route path="calendar" element={<PrivateRoute element={<Calendar />} />} />
+            <Route path="quotation-request" element={<PrivateRoute element={<Quotationrequesttable />} />} />
+            <Route path="offer" element={<PrivateRoute element={<Offer />} />} />
+            <Route path="sales-order" element={<PrivateRoute element={<Salesorder />} />} />
+            <Route path="job" element={<PrivateRoute element={<Job />} />} />
+            <Route path="invoices">
+              <Route path="passive" element={<PrivateRoute element={<Invoicetable invoicetype={"PassivaSdI"}/>} />} />
+              <Route path="active" element={<PrivateRoute element={<Invoicetable invoicetype={"AttivaSdI"}/>} />} />
+            </Route>
+            <Route path="company">
+              <Route path="customers" element={<PrivateRoute element={<Company companytype={"Customers"}/>} />} />
+              <Route path="suppliers" element={<PrivateRoute element={<Company companytype={"Suppliers"}/>} />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<Lost />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 

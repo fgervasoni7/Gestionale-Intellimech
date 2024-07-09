@@ -10,6 +10,7 @@ import bcrypt from "bcrypt";
 import sequelize from "../../utils/db.js";
 import Logger from "../../utils/logger.js";
 import Reporting from "../../models/reporting.js";
+import { Op } from "sequelize";
 
 // Setup the express router
 const router = express.Router();
@@ -19,6 +20,9 @@ const __dirname = path.resolve();
 
 router.get("/read/", (req, res) => {
     const { filterDate } = req.body;
+
+    // Get the current date
+    const currentDate = new Date().toISOString().slice(0, 10);
 
     Reporting.findAll({
         where: {      

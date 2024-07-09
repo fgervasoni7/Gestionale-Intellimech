@@ -5,7 +5,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 import QuotationRequestCreate from './quotationrequestcreate';
-import Notify from './notifypopup';
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -154,7 +154,7 @@ export default function Example({ permissions }) {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <Transition.Root show={open} as={Fragment}>
-       <Dialog as="div" className="relative z-20" onClose={setOpen}>
+       <Dialog as="div" className="relative z-50" onClose={setOpen}>
         <div className="fixed inset-0" />
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
@@ -203,7 +203,6 @@ export default function Example({ permissions }) {
         </div>
 
         {/* Search box and Year filter */}
-        <Notify showPopup={showPopup} />
         <div className="flex flex-wrap justify-between mt-4 mb-4">
           <div className="flex-grow w-full max-w-xs mr-4 mb-4">
             <input

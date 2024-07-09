@@ -22,7 +22,7 @@ router.get("/read/", (req, res) => {
     let result = [];
     try {
         switch (req.query.filter) {
-            case "supplier":
+            case "Suppliers":
                 company.findAll({
                     where: {
                         isSuppliers: true
@@ -51,7 +51,7 @@ router.get("/read/", (req, res) => {
                     throw new Error(err);
                 });
                 break;
-            case "client":
+            case "Customers":
                 //return only the companies that isClient is true
                 company.findAll({
                     where: {

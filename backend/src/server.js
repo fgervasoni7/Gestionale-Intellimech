@@ -79,4 +79,4 @@ if(process.env.ssl === 'true') {
 
 // doceasy.start();
 doceasy.getActiveInvoices();
-doceasy.checkCompany();
+doceasy.getPassiveInvoices();

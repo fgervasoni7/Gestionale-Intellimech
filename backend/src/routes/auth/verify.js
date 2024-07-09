@@ -62,6 +62,11 @@ router.get("/verify", async (req, res) => {
                 {
                     model: sequelize.models.Subgroup,
                     attributes: ["id_subgroup", "name"],
+                },
+                {
+                    model: sequelize.models.Notification,
+                    as: 'receiverUser', // Make sure this matches the alias
+                    attributes: ['id_notify', 'title', 'message', 'type']
                 }
             ],
         });
@@ -89,6 +94,7 @@ router.get("/verify", async (req, res) => {
             role: user.Role.name,
             group: user.Group.name,
             subgroup: user.Subgroup.name,
+            notification: user.receiverUser,
         };
 
         return res.status(200).json({

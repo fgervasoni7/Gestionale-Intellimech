@@ -29,7 +29,7 @@ const generatePassword = () => {
 };
 
 const userNavigation = [
-    { name: 'Your profile', href: '/profile' },
+    { name: 'Your profile', href: '/app/profile' },
     { name: 'Sign out', onClick: () => logout()},
   ]
 
@@ -37,60 +37,60 @@ const userNavigation = [
     { 
       showedname: "Dashboard", 
       options: [
-        { name: 'Dashboard', href: '/homepage', icon: 'HomeIcon', current: false, permissions: 'dashboard' },
-        { name: 'Rendicontazione', href: '/reporting', icon: 'ClockIcon', current: false, permissions: 'calendar' },
-        { name: 'Calendario', href: '/calendar', icon: 'CalendarDaysIcon', current: false, permissions: 'projects' },
+        { name: 'Dashboard', href: '/app/home', icon: 'HomeIcon', current: false, permissions: 'dashboard' },
+        { name: 'Rendicontazione', href: '/app/reporting', icon: 'ClockIcon', current: false, permissions: 'calendar' },
+        { name: 'Calendario', href: '/app/calendar', icon: 'CalendarDaysIcon', current: false, permissions: 'projects' },
       ], 
     },
     {
       showedname: "Analytics",
       options: [
-        { name: 'Report', href: '/analytics', icon: 'ChartPieIcon', current: false, permissions: 'report' },
+        { name: 'Report', href: '/app/analytics', icon: 'ChartPieIcon', current: false, permissions: 'report' },
       ],
     },
     { 
       showedname: "Project Orders", 
       options: [
-        { name: 'Richieste di Offerta', href: '/quotation-request', icon: 'ClipboardIcon', current: false, permissions: 'offerte' },
-        { name: 'Offerte', href: '/offer', icon: 'DocumentTextIcon', current: false, permissions: 'offerte' },
-        { name: 'Ordine di Vendita', href: '/sales-order', icon: 'ShoppingBagIcon', current: false, permissions: 'offerte' },
-        { name: 'Commesse', href: '/job', icon: 'Squares2X2Icon', current: false, permissions: 'commesse' },
-        { name: 'Archivio Commesse', href: '/orders/archive', icon: 'ArchiveIcon', current: false, permissions: 'archiviocommesse' },
+        { name: 'Richieste di Offerta', href: '/app/quotation-request', icon: 'ClipboardIcon', current: false, permissions: 'offerte' },
+        { name: 'Offerte', href: '/app/offer', icon: 'DocumentTextIcon', current: false, permissions: 'offerte' },
+        { name: 'Ordine di Vendita', href: '/app/sales-order', icon: 'ShoppingBagIcon', current: false, permissions: 'offerte' },
+        { name: 'Commesse', href: '/app/job', icon: 'Squares2X2Icon', current: false, permissions: 'commesse' },
+        { name: 'Archivio Commesse', href: '/app/orders/archive', icon: 'ArchiveIcon', current: false, permissions: 'archiviocommesse' },
       ], 
     },
     { 
       showedname: "Costs", 
       options: [
-        { name: 'Acquisti', href: '/purchase', icon: 'ShoppingCartIcon', current: false, permissions: 'acquisti' },
+        { name: 'Acquisti', href: '/app/purchase', icon: 'ShoppingCartIcon', current: false, permissions: 'acquisti' },
       ], 
     },
     {
       showedname: "Fatture",
       options: [
-        { name: 'Fatture Attive', href: '/invoices/active', icon: 'DocumentPlusIcon', current: false, },
-        { name: 'Fatture Passive', href: '/invoices/passive', icon: 'DocumentMinusIcon', current: false, }
+        { name: 'Fatture Attive', href: '/app/invoices/active', icon: 'DocumentPlusIcon', current: false, },
+        { name: 'Fatture Passive', href: '/app/invoices/passive', icon: 'DocumentMinusIcon', current: false, }
       ],
     },
     { 
       showedname: "Registry", 
       options: [
-        { name: 'Fornitori', href: '/company/suppliers', icon: 'FolderIcon', current: false },
-        { name: 'Clienti', href: '/company/clients', icon: 'UsersIcon', current: false },
-        { name: 'Personale', href: '/employees-consultants', icon: 'DocumentDuplicateIcon', current: false },
+        { name: 'Fornitori', href: '/app/company/suppliers', icon: 'FolderIcon', current: false },
+        { name: 'Clienti', href: '/app/company/customers', icon: 'UsersIcon', current: false },
+        { name: 'Personale', href: '/app/employees-consultants', icon: 'DocumentDuplicateIcon', current: false },
       ], 
     },
     { 
       showedname: "Management", 
       options: [
-        { name: 'Utenti', href: '/users', icon: 'UsersIcon', current: false },
-        { name: 'Ruoli', href: '/roles', icon: 'TagIcon' , current: false },
-        { name: 'Permessi', href: '/permission', icon: 'CheckBadgeIcon', current: false },
+        { name: 'Utenti', href: '/app/users', icon: 'UsersIcon', current: false },
+        { name: 'Ruoli', href: '/app/roles', icon: 'TagIcon' , current: false },
+        { name: 'Permessi', href: '/app/permission', icon: 'CheckBadgeIcon', current: false },
       ], 
     },
     { 
       showedname: "", 
       options: [
-        { name: 'Settings', href: '/settings', icon: 'Cog6ToothIcon', current: false },
+        { name: 'Settings', href: '/app/settings', icon: 'Cog6ToothIcon', current: false },
       ], 
     },
   ];

@@ -1,10 +1,11 @@
-import { Fragment, useState, useRef, useEffect } from 'react'
+import { Fragment, useState, useRef, useEffect, useContext } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon, CheckIcon, PaperAirplaneIcon, EyeIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import Notify from './notifypopup';
+import { UserContext } from '../module/userContext'
+
 import OfferCreate from './offercreate';
 import OfferInformation from './offerinformation';
 
@@ -12,8 +13,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example({ permissions, user }) {
+export default function Example({ permissions }) {
   const checkbox = useRef();
+  const { user } = useContext(UserContext);
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState([]);
@@ -171,7 +173,7 @@ export default function Example({ permissions, user }) {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <Transition.Root show={showInfo} as={Fragment}>
-        <Dialog className="relative z-20" onClose={setShowInfo}>
+        <Dialog className="relative z-50" onClose={setShowInfo}>
           <div className="fixed inset-0" />
 
           <div className="fixed inset-0 overflow-hidden">
@@ -216,8 +218,9 @@ export default function Example({ permissions, user }) {
         </Dialog>
       </Transition.Root>
       <Transition.Root show={showCreate} as={Fragment}>
-       <Dialog as="div" className="relative z-20" onClose={setShowCreate}>
-        <div className="fixed inset-0" />
+        <Dialog className="relative z-50" onClose={setShowCreate}>
+          <div className="fixed inset-0" />
+
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
               <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
@@ -230,12 +233,12 @@ export default function Example({ permissions, user }) {
                   leaveFrom="translate-x-0"
                   leaveTo="translate-x-full"
                 >
-                  <Dialog.Panel className="pointer-events-auto w-screen max-w-2xl">
+                  <Dialog.Panel className="pointer-events-auto w-screen max-w-7xl">
                     <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                       <div className="px-4 sm:px-6">
                         <div className="flex items-start justify-between">
                           <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
-                            Crea una nuova richiesta di offerta
+                            Crea una nuova offerta
                           </Dialog.Title>
                           <div className="ml-3 flex h-7 items-center">
                             <button
