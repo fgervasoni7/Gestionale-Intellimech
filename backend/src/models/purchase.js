@@ -6,10 +6,14 @@ class Purchase extends Model {}
 
 Purchase.init(
   {
-    id_order: {
+    id_purchase: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
+    },
+    azienda: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
     },
     p_iva: {
       type: DataTypes.STRING(20),
@@ -31,7 +35,7 @@ Purchase.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    vat_excluded: {
+    iva: {
       type: DataTypes.DECIMAL(20, 2),
       allowNull: true,
     },
@@ -40,11 +44,7 @@ Purchase.init(
       allowNull: true,
     },
     approved_by: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    signature: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     createdAt: {
