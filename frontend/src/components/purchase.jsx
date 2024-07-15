@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { UserContext } from '../module/userContext';
 
 import PurchaseCreateForm from './purchasecreate';
-import OfferInformation from './offerinformation';
+import PurchaseInformation from './purchaseinformation'; // Importa il nuovo componente
 
 const mockUp = [
     {
@@ -95,7 +95,6 @@ export default function Example({ permissions }) {
       <Transition.Root show={showInfo} as={Fragment}>
         <Dialog className="relative z-50" onClose={setShowInfo}>
           <div className="fixed inset-0" />
-
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
               <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
@@ -128,7 +127,9 @@ export default function Example({ permissions }) {
                           </div>
                         </div>
                       </div>
-                      <div className="relative mt-6 flex-1 px-4 sm:px-6">{ <OfferInformation item={selectedItemInfo} /> }</div>
+                      <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                        <PurchaseInformation item={selectedItemInfo} /> {/* Usa il nuovo componente */}
+                      </div>
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
@@ -141,7 +142,6 @@ export default function Example({ permissions }) {
       <Transition.Root show={showCreate} as={Fragment}>
         <Dialog className="relative z-50" onClose={setShowCreate}>
           <div className="fixed inset-0" />
-
           <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
               <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
@@ -174,7 +174,9 @@ export default function Example({ permissions }) {
                           </div>
                         </div>
                       </div>
-                      <div className="relative mt-6 flex-1 px-4 sm:px-6"><PurchaseCreateForm /></div>
+                      <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                        <PurchaseCreateForm />
+                      </div>
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
@@ -239,7 +241,7 @@ export default function Example({ permissions }) {
                 <thead>
                   <tr>
                     <th scope="col" className="px-3 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
-                      N.Ordine
+                      N. Ordine
                     </th>
                     <th scope="col" className="px-3 py-3.5 pr-3 text-left text-sm font-semibold text-gray-900">
                       Azienda
